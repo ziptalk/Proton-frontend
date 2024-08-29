@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
-import { STCOMBackground } from '../../common/styles/commonStyleComs';
+import {
+  STCOMBackground,
+  // STCOMBlueBtn,
+} from '../../common/styles/commonStyleComs';
 import { IcModalX, IcNotice } from '../assets/0_index';
 import ConnectWallet from '../../wallet/ConnectWallet';
 import { useRef } from 'react';
@@ -51,7 +54,6 @@ const UnConnectModal = ({
       </StWrapper>
     </STCOMBackground>
   );
-  // );
 };
 
 export default UnConnectModal;
@@ -102,3 +104,7 @@ const StBottom = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+// const StBlueBtn = styled(STCOMBlueBtn)`
+//   padding: 1rem 2rem;
+// `;

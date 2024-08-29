@@ -127,16 +127,12 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
   );
 };
 
-const ISnotConnectWallet = ({
-  openUnConnectModal,
-}: {
-  openUnConnectModal: () => void;
-}) => {
-  useEffect(() => {
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      openUnConnectModal();
-    }
-  }, []);
+const ISnotConnectWallet = () => {
+  // useEffect(() => {
+  //   if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+  //     openUnConnectModal();
+  //   }
+  // }, []);
   return (
     <StNotConnectContainer>
       <StBackbround src={dashboardBackIMG} />
@@ -193,9 +189,8 @@ const ISnotSelectBot = () => {
 const Dashboard = () => {
   const { address } = useChain('neutron');
   const [data, setData] = useState<IDashboard>();
-  const { refreshTrigger, openUnConnectModal } = useOutletContext<{
+  const { refreshTrigger } = useOutletContext<{
     refreshTrigger: boolean;
-    openUnConnectModal: () => void;
   }>();
 
   useEffect(() => {
@@ -229,7 +224,7 @@ const Dashboard = () => {
           <>loading..</>
         )
       ) : (
-        <ISnotConnectWallet openUnConnectModal={openUnConnectModal} />
+        <ISnotConnectWallet />
       )}
     </StContainer>
   );
@@ -256,6 +251,15 @@ const StTotalContainer = styled.div`
     gap: 1.2rem;
     & label {
       ${({ theme }) => theme.fonts.body_1};
+    }
+  }
+
+  @media (${({ theme }) => theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: 3rem;
+    & > div {
+      width: 100%;
+      gap: 0.5rem;
     }
   }
 `;

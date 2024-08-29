@@ -50,7 +50,7 @@ export function Wallet({
   }, []);
 
   return (
-    <Box>
+    <Box py='$16'>
       {/* <Box mx='auto' maxWidth='28rem' attributes={{ mb: '$12' }}>
         <ChainSelect
           chains={chains}

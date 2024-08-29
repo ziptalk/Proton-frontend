@@ -35,6 +35,7 @@ const BotModal = ({
   showToast: (message: string) => void;
   onDataRefreshRequest: () => void;
 }) => {
+  const ismobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const [depositValue, setDepositValue] = useState<string>('');
   const [placeholder, setPlaceholder] = useState(DEPOSIT_PLACEHOLDER.default);
   const [data, setData] = useState<IPnlChart>();
@@ -49,6 +50,9 @@ const BotModal = ({
     // if (!user_id) return;
     setUserId(address);
     getData();
+    if (ismobileDevice) {
+      setPlaceholder('Deposit is only available on desktop');
+    }
     if (!address) {
       setPlaceholder(DEPOSIT_PLACEHOLDER.notConnectWallet);
     }
@@ -90,6 +94,7 @@ const BotModal = ({
     try {
       setIsLoading('Open Wallet...');
       await depositTransfer(address, _amount);
+      alert('deposit!');
       setIsLoading('Depositing...');
       const postData = {
         user_id: address, // 지갑 주소
@@ -127,14 +132,20 @@ const BotModal = ({
                 NTRN
               </StAvailable>
             </StSpaceBetween>
-            <StinputContainer>
-              <input
-                placeholder={placeholder}
-                value={depositValue}
-                onChange={handleDepositValue}
-              />
-              <button onClick={() => setDepositValue(balance)}>Max</button>
-            </StinputContainer>
+            {ismobileDevice ? (
+              <StinputContainer>
+                Deposit is only available on desktop
+              </StinputContainer>
+            ) : (
+              <StinputContainer>
+                <input
+                  placeholder={placeholder}
+                  value={depositValue}
+                  onChange={handleDepositValue}
+                />
+                <button onClick={() => setDepositValue(balance)}>Max</button>
+              </StinputContainer>
+            )}
           </StColumn>
           <StGraphContaienr>
             <StPnlWrapper>
@@ -151,7 +162,8 @@ const BotModal = ({
             disabled={
               placeholder !== DEPOSIT_PLACEHOLDER.default ||
               !depositValue ||
-              Number(depositValue.replace(/,/g, '')) < MINVAL
+              Number(depositValue.replace(/,/g, '')) < MINVAL ||
+              ismobileDevice
             }
             onClick={() => deposit(botId)}
           >
@@ -201,7 +213,9 @@ const StScroll = styled.div`
   }
   @media (${({ theme }) => theme.breakpoints.mobile}) {
     width: 100%;
+    max-height: 80%;
     animation: ${slideUp} 0.5s ease-out;
+    padding-bottom: 10rem;
   }
 `;
 
@@ -262,6 +276,8 @@ const StinputContainer = styled.div`
   border: 0.1rem solid ${({ theme }) => theme.colors.not_important};
   background-color: #4f4f4f;
   position: relative;
+  ${({ theme }) => theme.fonts.body_3};
+  color: ${({ theme }) => theme.colors.negative};
 
   & > input {
     width: 80%;
