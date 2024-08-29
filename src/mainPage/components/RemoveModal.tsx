@@ -7,6 +7,7 @@ import { IcModalX } from '../assets/0_index';
 import axios from 'axios';
 import { useRef, useState } from 'react';
 import useOutsideClick from '../../common/hooks/useOutsideClick';
+import { useChain } from '@cosmos-kit/react';
 
 const RemoveModal = ({
   isOpen,
@@ -17,17 +18,18 @@ const RemoveModal = ({
   onClose: () => void;
   botId?: string | null;
 }) => {
+  const { address } = useChain('neutron');
   const wrapperRef = useRef<HTMLDivElement>(null);
   useOutsideClick(wrapperRef, onClose);
   const [isLoading, setIsLoading] = useState(false);
   if (!isOpen) return;
 
   const remove = async () => {
-    if (!localStorage.getItem('NEUTRONADDRESS')) return;
+    if (!address) return;
     const base_url = import.meta.env.VITE_BASE_URL;
 
     const postBody = {
-      user_id: localStorage.getItem('NEUTRONADDRESS'),
+      user_id: address,
       bot_id: botId,
     };
     try {

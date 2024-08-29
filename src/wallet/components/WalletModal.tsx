@@ -17,6 +17,7 @@ import CopyToast from '../../common/components/CopyToast';
 import useToast from '../../common/hooks/useToast';
 import { useRef } from 'react';
 import useOutsideClick from '../../common/hooks/useOutsideClick';
+import { useChain } from '@cosmos-kit/react';
 
 const WalletModal = ({
   isOpen,
@@ -26,7 +27,7 @@ const WalletModal = ({
   onClose: () => void;
 }) => {
   const navigate = useNavigate();
-  const address = localStorage.getItem('NEUTRONADDRESS');
+  const { address } = useChain('neutron');
   const { toast, showToast } = useToast();
   const wrapperRef = useRef<HTMLDivElement>(null);
   useOutsideClick(wrapperRef, onClose);

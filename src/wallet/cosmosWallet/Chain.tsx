@@ -5,7 +5,7 @@ import {
   Avatar,
   Box,
   Combobox,
-  Skeleton,
+  // Skeleton,
   Stack,
   Text,
   ThemeProvider,
@@ -110,7 +110,7 @@ export function ChainSelect({
                 alignItems='center'
                 px='$4'
               >
-                <Skeleton width='24px' height='24px' borderRadius='$full' />
+                {/* <Skeleton width='24px' height='24px' borderRadius='$full' /> */}
               </Box>
             )
           }

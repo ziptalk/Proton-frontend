@@ -17,6 +17,7 @@ import PreviewChart from './PreviewChart';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IChartData } from '../types/pnlChartType';
+import { useChain } from '@cosmos-kit/react';
 
 interface IBotBoardProps {
   data: ITRADEBOTS;
@@ -27,7 +28,6 @@ interface IBotBoardProps {
 }
 
 const base_url = import.meta.env.VITE_BASE_URL;
-// const user_id = localStorage.getItem('NEUTRONADDRESS');
 
 const BotBoard = ({
   data: propsData,
@@ -35,12 +35,13 @@ const BotBoard = ({
   openModal,
   openUnConnectModal,
 }: IBotBoardProps) => {
+  const { address } = useChain('neutron');
   const [chartData, setChartData] = useState<IChartData[]>();
-  const [user_id, setUserId] = useState(localStorage.getItem('NEUTRONADDRESS'));
+  const [user_id, setUserId] = useState(address);
   useEffect(() => {
     if (!active) return;
     getData();
-    setUserId(localStorage.getItem('NEUTRONADDRESS'));
+    setUserId(address);
   }, []);
 
   const getData = async () => {
@@ -98,7 +99,7 @@ const BotBoard = ({
               </StOperated>
               <StDeposit
                 onClick={() =>
-                  user_id ? openModal(propsData.bot_id) : openUnConnectModal()
+                  address ? openModal(propsData.bot_id) : openUnConnectModal()
                 }
               >
                 Deposit

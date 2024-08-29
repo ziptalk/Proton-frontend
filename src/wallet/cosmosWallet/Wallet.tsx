@@ -1,16 +1,9 @@
 import { useEffect } from 'react';
-import {
-  Box,
-  ClipboardCopyText,
-  Stack,
-  useColorModeValue,
-} from '@interchain-ui/react';
+import { Box } from '@interchain-ui/react';
 import { WalletStatus } from '@cosmos-kit/core';
 import { useChain } from '@cosmos-kit/react';
-import { chains } from 'chain-registry';
-import { User } from './User';
+
 import { Warning } from './Warning';
-import { ChainSelect } from './Chain';
 import { CHAIN_NAME, CHAIN_NAME_STORAGE_KEY } from '../config';
 import {
   ButtonConnect,
@@ -31,16 +24,7 @@ export function Wallet({
   chainName = CHAIN_NAME,
   onChainChange = () => {},
 }: WalletProps) {
-  const {
-    chain,
-    status,
-    wallet,
-    username,
-    address,
-    message,
-    connect,
-    openView,
-  } = useChain(chainName);
+  const { status, wallet, message, connect, openView } = useChain(chainName);
 
   const ConnectButton = {
     [WalletStatus.Connected]: <ButtonConnected onClick={openView} />,
@@ -51,12 +35,12 @@ export function Wallet({
     [WalletStatus.NotExist]: <ButtonNotExist onClick={openView} />,
   }[status] || <ButtonConnect onClick={connect} />;
 
-  function handleChainChange(chainName?: string) {
-    if (chainName) {
-      onChainChange(chainName);
-      localStorage.setItem(CHAIN_NAME_STORAGE_KEY, chainName!);
-    }
-  }
+  // function handleChainChange(chainName?: string) {
+  //   if (chainName) {
+  //     onChainChange(chainName);
+  //     localStorage.setItem(CHAIN_NAME_STORAGE_KEY, chainName!);
+  //   }
+  // }
 
   useEffect(() => {
     const selected = localStorage.getItem(CHAIN_NAME_STORAGE_KEY);
@@ -66,15 +50,15 @@ export function Wallet({
   }, []);
 
   return (
-    <Box py='$16'>
-      <Box mx='auto' maxWidth='28rem' attributes={{ mb: '$12' }}>
+    <Box>
+      {/* <Box mx='auto' maxWidth='28rem' attributes={{ mb: '$12' }}>
         <ChainSelect
           chains={chains}
           chainName={chain.chain_name}
           onChange={handleChainChange}
         />
-      </Box>
-      <Stack
+      </Box> */}
+      {/* <Stack
         direction='vertical'
         attributes={{
           mx: 'auto',
@@ -89,29 +73,28 @@ export function Wallet({
             '0 0 2px #363636, 0 0 8px -2px #4f4f4f'
           ),
         }}
-      >
-        {username ? <User name={username} /> : null}
-        {address ? (
+      > */}
+      {/* {username ? <User name={username} /> : null} */}
+      {/* {address ? (
           <ClipboardCopyText text={address} truncate='middle' />
-        ) : null}
-        <Box
-          my='$8'
-          flex='1'
-          width='full'
-          display='flex'
-          height='$16'
-          overflow='hidden'
-          justifyContent='center'
-          px={{ mobile: '$8', tablet: '$10' }}
-        >
-          {ConnectButton}
-        </Box>
+        ) : null} */}
+      <Box
+        my='$8'
+        flex='1'
+        width='full'
+        display='flex'
+        overflow='hidden'
+        justifyContent='center'
+        px={{ mobile: '$8', tablet: '$10' }}
+      >
+        {ConnectButton}
+      </Box>
 
-        {message &&
-        [WalletStatus.Error, WalletStatus.Rejected].includes(status) ? (
-          <Warning text={`${wallet?.prettyName}: ${message}`} />
-        ) : null}
-      </Stack>
+      {message &&
+      [WalletStatus.Error, WalletStatus.Rejected].includes(status) ? (
+        <Warning text={`${wallet?.prettyName}: ${message}`} />
+      ) : null}
+      {/* </Stack> */}
     </Box>
   );
 }

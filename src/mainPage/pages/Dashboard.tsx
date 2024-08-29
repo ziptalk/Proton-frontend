@@ -19,6 +19,7 @@ import { dashboardBackIMG } from '../assets/0_index';
 import { formatUnits } from '../../common/utils/formatUnits';
 import useTablet from '../../common/hooks/useTablet';
 import TableTablet from '../components/TableTablet';
+import { useChain } from '@cosmos-kit/react';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -190,7 +191,7 @@ const ISnotSelectBot = () => {
 };
 
 const Dashboard = () => {
-  const [isWalletConnect] = useState(localStorage.getItem('NEUTRONADDRESS'));
+  const { address } = useChain('neutron');
   const [data, setData] = useState<IDashboard>();
   const { refreshTrigger, openUnConnectModal } = useOutletContext<{
     refreshTrigger: boolean;
@@ -198,14 +199,14 @@ const Dashboard = () => {
   }>();
 
   useEffect(() => {
-    if (!isWalletConnect) return;
+    if (!address) return;
     getData();
-  }, [refreshTrigger]);
+  }, [refreshTrigger, address]);
 
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `${base_url}/api/dashboard?user_id=${isWalletConnect}`
+        `${base_url}/api/dashboard?user_id=${address}`
       );
       // console.log(`🫥dashboard :`, data);
       setData(data);
@@ -217,7 +218,7 @@ const Dashboard = () => {
   return (
     <StContainer>
       <SelectView view={VIEW.DASHBOARD} />
-      {isWalletConnect ? (
+      {address ? (
         data ? (
           data?.bots?.length ? (
             <ShowDashboardData data={data} />
