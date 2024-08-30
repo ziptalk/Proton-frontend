@@ -82,6 +82,15 @@ const WalletModal = ({ isOpen, setOpen, walletRepo }: WalletModalProps) => {
         <StSpaceBetween>
           {walletRepo?.wallets.map(({ walletInfo, connect }) => {
             const { prettyName, logo } = walletInfo;
+            let logoSrc: string | undefined;
+
+            if (typeof logo === 'string') {
+              // logo가 문자열인 경우
+              logoSrc = logo;
+            } else if (logo && typeof logo === 'object') {
+              // logo가 객체인 경우 major URL을 사용
+              logoSrc = logo.major;
+            }
 
             return (
               <StConnectWallet
@@ -91,7 +100,7 @@ const WalletModal = ({ isOpen, setOpen, walletRepo }: WalletModalProps) => {
                   onCloseModal();
                 }}
               >
-                <StWalletLogo src={logo} alt='logo' />
+                <StWalletLogo src={logoSrc} alt='logo' />
                 <p>{prettyName}</p>
               </StConnectWallet>
             );
