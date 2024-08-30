@@ -22,12 +22,6 @@ const WalletModal = ({ isOpen, setOpen, walletRepo }: WalletModalProps) => {
   const { toast, showToast } = useToast();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   const fn = async () => {
-  //     await mainWallet?.connect();
-  //   };
-  //   fn();
-  // }, []);
   const onCloseModal = () => {
     setOpen(false);
   };
@@ -81,7 +75,7 @@ const WalletModal = ({ isOpen, setOpen, walletRepo }: WalletModalProps) => {
         </StTop>
         <StSpaceBetween>
           {walletRepo?.wallets.map(({ walletInfo, connect }) => {
-            const { prettyName, logo } = walletInfo;
+            const { prettyName, logo, downloads } = walletInfo;
             let logoSrc: string | undefined;
 
             if (typeof logo === 'string') {
@@ -96,6 +90,11 @@ const WalletModal = ({ isOpen, setOpen, walletRepo }: WalletModalProps) => {
               <StConnectWallet
                 key={prettyName}
                 onClick={() => {
+                  if (!window.keplr) {
+                    downloads && window.open(downloads[0].link);
+                    onCloseModal();
+                    return;
+                  }
                   connect();
                   onCloseModal();
                 }}

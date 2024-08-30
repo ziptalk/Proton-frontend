@@ -35,7 +35,7 @@ export function Button({
           background: 'linear-gradient(125deg, #2f44b0ab 1%, #581a38e4 99%)',
           height: '4.6rem',
           fontSize: '1.6rem', // 글자 크기 설정
-          fontWeight: 'bold', // 글자 두께 설정
+          fontWeight: 'Bold', // 글자 두께 설정
           padding: '10px 20px', // 버튼 내부 패딩 설정
           borderRadius: '20px', // 버튼의 모서리를 둥글게 설정
         },
