@@ -6,7 +6,6 @@ import { Outlet } from 'react-router-dom';
 import useModal from '../common/hooks/useModal';
 import BotModal from './components/BotModal';
 import RemoveModal from './components/RemoveModal';
-import WalletModal from '../wallet/components/WalletModal';
 import { STCOMBackdrop } from '../common/styles/commonStyleComs';
 import UnConnectModal from './components/UnConnectModal';
 import DepositToast from '../common/components/DepositToast';
@@ -36,13 +35,6 @@ const MainPage = () => {
     botId: removeBotId,
   } = useModal();
 
-  //wallet Modal
-  const {
-    isModalOpen: isWalletModalOpen,
-    openModal: openWalletModal,
-    closeModal: closeWalletModal,
-  } = useModal();
-
   //unconnect Modal
   const {
     isModalOpen: isUnConnectMoalOpen,
@@ -51,7 +43,7 @@ const MainPage = () => {
   } = useModal();
   return (
     <>
-      <Header openWalletModal={openWalletModal} />
+      <Header />
       <St.MainContainer>
         <Announcement />
         <Dashboard
@@ -62,10 +54,9 @@ const MainPage = () => {
         />
         <Footer />
       </St.MainContainer>
-      {(isBotModalOpen ||
-        isRemoveMoalOpen ||
-        isWalletModalOpen ||
-        isUnConnectMoalOpen) && <STCOMBackdrop />}
+      {(isBotModalOpen || isRemoveMoalOpen || isUnConnectMoalOpen) && (
+        <STCOMBackdrop />
+      )}
       {isBotModalOpen && (
         <BotModal
           isOpen={isBotModalOpen}
@@ -81,9 +72,6 @@ const MainPage = () => {
           onClose={closeRemoveModal}
           botId={removeBotId}
         />
-      )}
-      {isWalletModalOpen && (
-        <WalletModal isOpen={isWalletModalOpen} onClose={closeWalletModal} />
       )}
       {isUnConnectMoalOpen && (
         <UnConnectModal

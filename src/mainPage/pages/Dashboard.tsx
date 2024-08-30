@@ -19,6 +19,7 @@ import { dashboardBackIMG } from '../assets/0_index';
 import { formatUnits } from '../../common/utils/formatUnits';
 import useTablet from '../../common/hooks/useTablet';
 import TableTablet from '../components/TableTablet';
+import { useChain } from '@cosmos-kit/react';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -126,16 +127,12 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
   );
 };
 
-const ISnotConnectWallet = ({
-  openUnConnectModal,
-}: {
-  openUnConnectModal: () => void;
-}) => {
-  useEffect(() => {
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      openUnConnectModal();
-    }
-  }, []);
+const ISnotConnectWallet = () => {
+  // useEffect(() => {
+  //   if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+  //     openUnConnectModal();
+  //   }
+  // }, []);
   return (
     <StNotConnectContainer>
       <StBackbround src={dashboardBackIMG} />
@@ -190,22 +187,21 @@ const ISnotSelectBot = () => {
 };
 
 const Dashboard = () => {
-  const [isWalletConnect] = useState(localStorage.getItem('NEUTRONADDRESS'));
+  const { address } = useChain('neutron');
   const [data, setData] = useState<IDashboard>();
-  const { refreshTrigger, openUnConnectModal } = useOutletContext<{
+  const { refreshTrigger } = useOutletContext<{
     refreshTrigger: boolean;
-    openUnConnectModal: () => void;
   }>();
 
   useEffect(() => {
-    if (!isWalletConnect) return;
+    if (!address) return;
     getData();
-  }, [refreshTrigger]);
+  }, [refreshTrigger, address]);
 
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `${base_url}/api/dashboard?user_id=${isWalletConnect}`
+        `${base_url}/api/dashboard?user_id=${address}`
       );
       // console.log(`🫥dashboard :`, data);
       setData(data);
@@ -217,7 +213,7 @@ const Dashboard = () => {
   return (
     <StContainer>
       <SelectView view={VIEW.DASHBOARD} />
-      {isWalletConnect ? (
+      {address ? (
         data ? (
           data?.bots?.length ? (
             <ShowDashboardData data={data} />
@@ -228,7 +224,7 @@ const Dashboard = () => {
           <>loading..</>
         )
       ) : (
-        <ISnotConnectWallet openUnConnectModal={openUnConnectModal} />
+        <ISnotConnectWallet />
       )}
     </StContainer>
   );
@@ -255,6 +251,15 @@ const StTotalContainer = styled.div`
     gap: 1.2rem;
     & label {
       ${({ theme }) => theme.fonts.body_1};
+    }
+  }
+
+  @media (${({ theme }) => theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: 3rem;
+    & > div {
+      width: 100%;
+      gap: 0.5rem;
     }
   }
 `;

@@ -1,4 +1,5 @@
-export const shortenWalletAddress = (address: string) => {
+export const shortenWalletAddress = (address: string | undefined) => {
+  if (!address) return '';
   // if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
   //   throw new Error('유효하지 않은 주소입니다.');
   // }

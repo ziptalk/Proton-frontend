@@ -59,4 +59,8 @@ const StToastWrapper = styled.div`
   gap: 0.6rem;
 
   ${transformStyles}
+
+  @media (${({ theme }) => theme.breakpoints.mobile}) {
+    height: 8rem;
+  }
 `;

@@ -4,7 +4,6 @@ import { GasPrice } from '@cosmjs/stargate';
 import { OfflineAminoSigner } from '@keplr-wallet/types';
 
 const rpcEndpoint = 'https://neutron-rpc.publicnode.com/';
-const address = localStorage.getItem('NEUTRONADDRESS');
 const chain_id = 'neutron-1';
 const decimalPlaces = 6;
 
@@ -14,7 +13,7 @@ const formatAmount = (amount: number, decimalPlaces: number): number => {
   return Number(integerAmount);
 };
 
-export const depositTransfer = async (value: number) => {
+export const depositTransfer = async (address: string, value: number) => {
   if (!address) return;
   const formattedAmount = formatAmount(value, decimalPlaces);
   const get_wallet_for_chain = async (): Promise<

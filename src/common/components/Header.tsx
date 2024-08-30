@@ -20,7 +20,6 @@ interface HeaderProps {
 }
 
 const Header = ({
-  openWalletModal,
   scrollToSection,
   section2Ref,
   section3Ref,
@@ -68,7 +67,7 @@ const Header = ({
             section4Ref={section4Ref}
           />
         ) : (
-          <ConnectWallet openWalletModal={openWalletModal} />
+          <ConnectWallet />
         )}
       </StWrapper>
     </StContainer>
@@ -117,9 +116,9 @@ const HeaderNav = ({
       {pathname === '/onboarding' ? (
         <TradeNowBtn />
       ) : (
-        !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && (
-          <ConnectWallet />
-        )
+        // !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && (
+        <ConnectWallet />
+        // )
       )}
     </StNav>
   );

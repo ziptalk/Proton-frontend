@@ -18,6 +18,7 @@ import { depositTransfer } from '../../contract/deposit';
 import { slideUp } from '../../common/utils/animation';
 import IconTriangleDown from '../../common/assets/IconTriangleDown';
 import IconTriangleUp from '../../common/assets/IconTriangleUp';
+import { useChain } from '@cosmos-kit/react';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
@@ -34,20 +35,25 @@ const BotModal = ({
   showToast: (message: string) => void;
   onDataRefreshRequest: () => void;
 }) => {
+  const ismobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const [depositValue, setDepositValue] = useState<string>('');
   const [placeholder, setPlaceholder] = useState(DEPOSIT_PLACEHOLDER.default);
   const [data, setData] = useState<IPnlChart>();
   const [balance, setBalance] = useState('-');
-  const [user_id, setUserId] = useState(localStorage.getItem('NEUTRONADDRESS'));
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState('Deposit');
+  const { address } = useChain('neutron');
+  const [user_id, setUserId] = useState(address);
   useOutsideClick(wrapperRef, onClose);
 
   useEffect(() => {
     // if (!user_id) return;
-    setUserId(localStorage.getItem('NEUTRONADDRESS'));
+    setUserId(address);
     getData();
-    if (!localStorage.getItem('NEUTRONADDRESS')) {
+    if (ismobileDevice) {
+      setPlaceholder('Deposit is only available on desktop');
+    }
+    if (!address) {
       setPlaceholder(DEPOSIT_PLACEHOLDER.notConnectWallet);
     }
     fetchBalance();
@@ -83,14 +89,15 @@ const BotModal = ({
   const deposit = async (id: string | null) => {
     if (!id) return;
     const base_url = import.meta.env.VITE_BASE_URL;
-    if (!localStorage.getItem('NEUTRONADDRESS') || !depositValue) return;
+    if (!address || !depositValue) return;
     const _amount = Number(depositValue.replace(/,/g, ''));
     try {
       setIsLoading('Open Wallet...');
-      await depositTransfer(_amount);
+      await depositTransfer(address, _amount);
+      alert('deposit!');
       setIsLoading('Depositing...');
       const postData = {
-        user_id: localStorage.getItem('NEUTRONADDRESS'), // 지갑 주소
+        user_id: address, // 지갑 주소
         bot_id: id,
         amount: _amount, // 입금할 금액
       };
@@ -125,14 +132,20 @@ const BotModal = ({
                 NTRN
               </StAvailable>
             </StSpaceBetween>
-            <StinputContainer>
-              <input
-                placeholder={placeholder}
-                value={depositValue}
-                onChange={handleDepositValue}
-              />
-              <button onClick={() => setDepositValue(balance)}>Max</button>
-            </StinputContainer>
+            {ismobileDevice ? (
+              <StinputContainer>
+                Deposit is only available on desktop
+              </StinputContainer>
+            ) : (
+              <StinputContainer>
+                <input
+                  placeholder={placeholder}
+                  value={depositValue}
+                  onChange={handleDepositValue}
+                />
+                <button onClick={() => setDepositValue(balance)}>Max</button>
+              </StinputContainer>
+            )}
           </StColumn>
           <StGraphContaienr>
             <StPnlWrapper>
@@ -149,7 +162,8 @@ const BotModal = ({
             disabled={
               placeholder !== DEPOSIT_PLACEHOLDER.default ||
               !depositValue ||
-              Number(depositValue.replace(/,/g, '')) < MINVAL
+              Number(depositValue.replace(/,/g, '')) < MINVAL ||
+              ismobileDevice
             }
             onClick={() => deposit(botId)}
           >
@@ -199,7 +213,10 @@ const StScroll = styled.div`
   }
   @media (${({ theme }) => theme.breakpoints.mobile}) {
     width: 100%;
+    max-height: 80%;
     animation: ${slideUp} 0.5s ease-out;
+    padding-bottom: 10rem;
+    border-radius: 16px 16px 0 0;
   }
 `;
 
@@ -260,6 +277,8 @@ const StinputContainer = styled.div`
   border: 0.1rem solid ${({ theme }) => theme.colors.not_important};
   background-color: #4f4f4f;
   position: relative;
+  ${({ theme }) => theme.fonts.body_3};
+  color: ${({ theme }) => theme.colors.negative};
 
   & > input {
     width: 80%;

@@ -52,6 +52,7 @@ const StFooter = {
       flex-wrap: wrap-reverse;
       align-items: center;
       justify-content: center;
+      text-align: center;
       gap: 3.2rem;
     }
   `,

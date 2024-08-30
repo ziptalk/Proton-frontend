@@ -117,7 +117,7 @@ const AreaChart = ({ chartData }: { chartData: IChartData[] }) => {
       series={series}
       type='area'
       height={240}
-      width={450}
+      width={350}
     />
   ) : (
     <ApexCharts
