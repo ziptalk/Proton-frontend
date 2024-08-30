@@ -216,6 +216,7 @@ const StScroll = styled.div`
     max-height: 80%;
     animation: ${slideUp} 0.5s ease-out;
     padding-bottom: 10rem;
+    border-radius: 16px 16px 0 0;
   }
 `;
 

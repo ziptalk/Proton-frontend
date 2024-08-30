@@ -1,7 +1,4 @@
-import {
-  STCOMBackground,
-  STCOMBoxWrapper,
-} from '../../common/styles/commonStyleComs';
+import { STCOMBoxWrapper } from '../../common/styles/commonStyleComs';
 import styled from '@emotion/styled';
 import { IcModalX } from '../../mainPage/assets/0_index';
 import {
@@ -9,70 +6,99 @@ import {
   IcDuplicate,
   WalletNeutronIcon,
 } from '../assets/0_indes';
-import { disconnectWallet } from '../utils/disconnectWallet';
-import { useNavigate } from 'react-router-dom';
+
 import { shortenWalletAddress } from '../../common/utils/shortenWalletAddress';
 import { copyLink } from '../../common/utils/copyLink';
 import CopyToast from '../../common/components/CopyToast';
 import useToast from '../../common/hooks/useToast';
 import { useRef } from 'react';
-import useOutsideClick from '../../common/hooks/useOutsideClick';
 import { useChain } from '@cosmos-kit/react';
+import { WalletModalProps } from 'cosmos-kit';
+import { Modal } from '@interchain-ui/react';
+import { fadeSlideUp } from '../../common/styles/modalAnimationStyle';
 
-const WalletModal = ({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  const navigate = useNavigate();
-  const { address } = useChain('neutron');
+const WalletModal = ({ isOpen, setOpen, walletRepo }: WalletModalProps) => {
+  const { disconnect, address } = useChain('neutron');
   const { toast, showToast } = useToast();
   const wrapperRef = useRef<HTMLDivElement>(null);
-  useOutsideClick(wrapperRef, onClose);
-  if (!isOpen || !address) return;
 
+  // useEffect(() => {
+  //   const fn = async () => {
+  //     await mainWallet?.connect();
+  //   };
+  //   fn();
+  // }, []);
+  const onCloseModal = () => {
+    setOpen(false);
+  };
+  if (address) {
+    return (
+      <Modal isOpen={isOpen} onClose={onCloseModal} header={''}>
+        <StWrapper ref={wrapperRef}>
+          <StTop>
+            <p>Account</p>
+            <IcModalX onClick={onCloseModal} style={{ cursor: 'pointer' }} />
+          </StTop>
+          <StWalletInfo>
+            <StSpaceBetween>
+              <StFlexC>
+                <span>Connected with Keplr</span>
+                <StAddress>
+                  <WalletNeutronIcon />
+                  <p>{shortenWalletAddress(address)}</p>
+                  <StCopyIcon>
+                    <StIcDuplicate
+                      onClick={() => {
+                        copyLink(address);
+                        showToast('copy address!');
+                      }}
+                    />
+                    {toast && <CopyToast message={toast.message} />}
+                  </StCopyIcon>
+                </StAddress>
+              </StFlexC>
+
+              <StDisconnectBtn
+                onClick={async () => {
+                  await disconnect();
+                }}
+              >
+                Disconnect
+                <IcDisConnect />
+              </StDisconnectBtn>
+            </StSpaceBetween>
+          </StWalletInfo>
+        </StWrapper>
+      </Modal>
+    );
+  }
   return (
-    <STCOMBackground>
-      <StWrapper ref={wrapperRef}>
+    <Modal isOpen={isOpen} onClose={onCloseModal} header={''}>
+      <StWalletModalWrapper ref={wrapperRef}>
         <StTop>
-          <p>Account</p>
-          <IcModalX onClick={onClose} style={{ cursor: 'pointer' }} />
+          <p>Connect Wallet</p>
+          <IcModalX onClick={onCloseModal} style={{ cursor: 'pointer' }} />
         </StTop>
-        <StWalletInfo>
-          <StSpaceBetween>
-            <StFlexC>
-              <span>Connected with Keplr</span>
-              <StAddress>
-                <WalletNeutronIcon />
-                <p>{shortenWalletAddress(address)}</p>
-                <StCopyIcon>
-                  <StIcDuplicate
-                    onClick={() => {
-                      copyLink(address);
-                      showToast('copy address!');
-                    }}
-                  />
-                  {toast && <CopyToast message={toast.message} />}
-                </StCopyIcon>
-              </StAddress>
-            </StFlexC>
+        <StSpaceBetween>
+          {walletRepo?.wallets.map(({ walletInfo, connect }) => {
+            const { prettyName, logo } = walletInfo;
 
-            <StDisconnectBtn
-              onClick={async () => {
-                await disconnectWallet();
-                onClose();
-                navigate('/');
-              }}
-            >
-              Disconnect
-              <IcDisConnect />
-            </StDisconnectBtn>
-          </StSpaceBetween>
-        </StWalletInfo>
-      </StWrapper>
-    </STCOMBackground>
+            return (
+              <StConnectWallet
+                key={prettyName}
+                onClick={() => {
+                  connect();
+                  onCloseModal();
+                }}
+              >
+                <StWalletLogo src={logo} alt='logo' />
+                <p>{prettyName}</p>
+              </StConnectWallet>
+            );
+          })}
+        </StSpaceBetween>
+      </StWalletModalWrapper>
+    </Modal>
   );
 };
 
@@ -94,6 +120,16 @@ const StWrapper = styled.div`
   & > * {
     width: 100%;
   }
+
+  @media (${({ theme }) => theme.breakpoints.mobile}) {
+    width: 35rem;
+    height: fit-content;
+  }
+`;
+
+const StWalletModalWrapper = styled(StWrapper)`
+  width: 40rem;
+  animation: ${fadeSlideUp} 300ms;
 `;
 
 const StTop = styled.div`
@@ -113,6 +149,10 @@ const StWalletInfo = styled(STCOMBoxWrapper)`
   justify-content: center;
   ${({ theme }) => theme.fonts.body_3};
   padding: 4.7rem 3rem;
+
+  @media (${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 2rem;
+  }
 `;
 
 const StDisconnectBtn = styled.button`
@@ -133,12 +173,21 @@ const StSpaceBetween = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (${({ theme }) => theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: 3rem;
+  }
 `;
 
 const StFlexC = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+
+  @media (${({ theme }) => theme.breakpoints.mobile}) {
+    align-items: center;
+  }
 `;
 
 const StAddress = styled.div`
@@ -156,4 +205,23 @@ const StCopyIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const StConnectWallet = styled(StWalletInfo)`
+  padding: 3rem;
+  width: calc(50% - 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.qve_blue};
+  }
+  @media (${({ theme }) => theme.breakpoints.mobile}) {
+    width: 100%;
+  }
+`;
+
+const StWalletLogo = styled.img`
+  width: 6rem;
 `;

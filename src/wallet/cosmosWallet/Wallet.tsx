@@ -50,7 +50,7 @@ export function Wallet({
   }, []);
 
   return (
-    <Box py='$16'>
+    <Box py='$6'>
       {/* <Box mx='auto' maxWidth='28rem' attributes={{ mb: '$12' }}>
         <ChainSelect
           chains={chains}
@@ -79,13 +79,11 @@ export function Wallet({
           <ClipboardCopyText text={address} truncate='middle' />
         ) : null} */}
       <Box
-        my='$8'
         flex='1'
         width='full'
         display='flex'
         overflow='hidden'
         justifyContent='center'
-        px={{ mobile: '$8', tablet: '$10' }}
       >
         {ConnectButton}
       </Box>

@@ -116,9 +116,9 @@ const HeaderNav = ({
       {pathname === '/onboarding' ? (
         <TradeNowBtn />
       ) : (
-        !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && (
-          <ConnectWallet />
-        )
+        // !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && (
+        <ConnectWallet />
+        // )
       )}
     </StNav>
   );
