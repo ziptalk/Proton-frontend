@@ -75,7 +75,7 @@ const WalletModal = ({ isOpen, setOpen, walletRepo }: WalletModalProps) => {
         </StTop>
         <StSpaceBetween>
           {walletRepo?.wallets.map(({ walletInfo, connect }) => {
-            const { prettyName, logo, downloads } = walletInfo;
+            const { prettyName, logo } = walletInfo;
             let logoSrc: string | undefined;
 
             if (typeof logo === 'string') {
@@ -90,11 +90,15 @@ const WalletModal = ({ isOpen, setOpen, walletRepo }: WalletModalProps) => {
               <StConnectWallet
                 key={prettyName}
                 onClick={() => {
-                  if (!window.keplr) {
-                    downloads && window.open(downloads[0].link);
-                    onCloseModal();
-                    return;
-                  }
+                  // if (!window.keplr) {
+                  //   if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                  //     connect();
+                  //     return;
+                  //   }
+                  //   downloads && window.open(downloads[0].link);
+                  //   onCloseModal();
+                  //   return;
+                  // }
                   connect();
                   onCloseModal();
                 }}
