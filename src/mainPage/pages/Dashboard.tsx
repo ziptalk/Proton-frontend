@@ -20,6 +20,7 @@ import { formatUnits } from '../../common/utils/formatUnits';
 import useTablet from '../../common/hooks/useTablet';
 import TableTablet from '../components/TableTablet';
 import { MOCK_DASHBOARD } from '../constants/mainPage_MOCK';
+import { formatPercentValue } from '../../common/utils/formatPercentValue';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -95,7 +96,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
                 </StTableCell>
                 <StTableCell>
                   <StColor isPositive={item.daily_pnl >= 0}>
-                    {formatUnits(item.daily_pnl)} %
+                    {formatPercentValue(item.daily_pnl)} %
                   </StColor>
                 </StTableCell>
                 <StTableCell>
