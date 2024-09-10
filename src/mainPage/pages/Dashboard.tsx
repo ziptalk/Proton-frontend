@@ -19,6 +19,7 @@ import { dashboardBackIMG } from '../assets/0_index';
 import { formatUnits } from '../../common/utils/formatUnits';
 import useTablet from '../../common/hooks/useTablet';
 import TableTablet from '../components/TableTablet';
+import { MOCK_DASHBOARD } from '../constants/mainPage_MOCK';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -94,7 +95,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
                 </StTableCell>
                 <StTableCell>
                   <StColor isPositive={item.daily_pnl >= 0}>
-                    {formatUnits(item.daily_pnl)} {TOKEN}
+                    {formatUnits(item.daily_pnl)} %
                   </StColor>
                 </StTableCell>
                 <StTableCell>
@@ -209,8 +210,11 @@ const Dashboard = () => {
       );
       // console.log(`🫥dashboard :`, data);
       setData(data);
-    } catch {
-      //err
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        err.response.status === 404 && setData(MOCK_DASHBOARD);
+        return;
+      }
     }
   };
 

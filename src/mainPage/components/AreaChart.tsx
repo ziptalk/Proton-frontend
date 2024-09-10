@@ -89,6 +89,7 @@ const AreaChart = ({ chartData }: { chartData: IChartData[] }) => {
     },
     yaxis: {
       labels: {
+        show: false,
         formatter: (value) => {
           return value + '%'; // y축의 값을 %로 포맷팅합니다.
         },

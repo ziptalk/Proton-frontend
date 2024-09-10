@@ -1,19 +1,19 @@
 import { IDashboard, ITRADEBOTS } from '../types/dashboardType';
 
 export const MOCK_DASHBOARD: IDashboard = {
-  total_balance: 10000,
-  total_profit: 2000,
-  total_balance_usdt: 30000,
-  total_profit_usdt: 6000,
+  total_balance: 0,
+  total_profit: 0,
+  total_balance_usdt: 0,
+  total_profit_usdt: 0,
   bots: [
-    {
-      bot_name: 'Cyclic Arb bot',
-      bot_id: 'Cyclic Arb bot',
-      total_investment: 5000,
-      current_value: 5500,
-      daily_pnl: 100,
-      total_profit: 500,
-    },
+    // {
+    //   bot_name: 'Cyclic Arb bot',
+    //   bot_id: 'Cyclic Arb bot',
+    //   total_investment: 5000,
+    //   current_value: 5500,
+    //   daily_pnl: 100,
+    //   total_profit: 500,
+    // },
   ],
 };
 
