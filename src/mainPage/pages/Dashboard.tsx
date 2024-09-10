@@ -16,7 +16,6 @@ import axios from 'axios';
 import { formatPriceValue } from '../../common/utils/formatPriceValue';
 import BotLogo from '../../common/components/BotLogo';
 import { dashboardBackIMG } from '../assets/0_index';
-import { formatUnits } from '../../common/utils/formatUnits';
 import useTablet from '../../common/hooks/useTablet';
 import TableTablet from '../components/TableTablet';
 import { MOCK_DASHBOARD } from '../constants/mainPage_MOCK';
