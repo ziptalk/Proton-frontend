@@ -4,7 +4,7 @@ import { IChartData } from '../types/pnlChartType';
 import useMobile from '../../common/hooks/useMobile';
 
 const getYRange = (data: IChartData[]) => {
-  const yValues = data.map((item) => item.pnlRate);
+  const yValues = data.map((item) => item.balance);
   const minY = Math.min(...yValues);
   const maxY = Math.max(...yValues);
   return { minY, maxY };
@@ -18,7 +18,7 @@ const AreaChart = ({ chartData }: { chartData: IChartData[] }) => {
       name: '이번 연도',
       data: chartData?.map((item) => [
         new Date(item.createdAt).getTime(),
-        item.pnlRate,
+        item.balance,
       ]),
       // data: [
       //   [new Date('2024-08-01').getTime(), 10],

@@ -10,7 +10,7 @@ export interface IPnlChart {
 
 export interface IChartData {
   createdAt: string;
-  pnlRate: number;
+  balance: number;
 }
 
 export interface IDetail {
