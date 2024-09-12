@@ -2,6 +2,7 @@ import ApexCharts from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 import { IChartData } from '../types/pnlChartType';
 import useMobile from '../../common/hooks/useMobile';
+import { formatPercentValue } from '../../common/utils/formatPercentValue';
 
 const getYRange = (data: IChartData[]) => {
   const yValues = data.map((item) => item.pnlRate);
@@ -89,16 +90,19 @@ const AreaChart = ({ chartData }: { chartData: IChartData[] }) => {
     },
     yaxis: {
       labels: {
-        show: false,
+        // show: false,
         formatter: (value) => {
-          return value + '%'; // y축의 값을 %로 포맷팅합니다.
+          if (value === 0) {
+            return '';
+          }
+          return formatPercentValue(value) + '%'; // y축의 값을 %로 포맷팅합니다.
         },
         style: {
           colors: ['#ffffff'],
         },
       },
       tickAmount: 5,
-      min: minY - 10,
+      min: minY - 10 < 0 ? 0 : minY - 10,
       max: maxY + 10,
       // min: -10,
       // max: 100,
