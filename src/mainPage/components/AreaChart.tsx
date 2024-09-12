@@ -103,7 +103,7 @@ const AreaChart = ({ chartData }: { chartData: IChartData[] }) => {
       },
       tickAmount: 5,
       min: minY - 10 < 0 ? 0 : minY - 10,
-      max: maxY + 10,
+      max: maxY + 10 >= 100 ? 100 : maxY + 10,
       // min: -10,
       // max: 100,
     },
