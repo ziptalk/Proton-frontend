@@ -3,6 +3,8 @@ import MainPage from '../mainPage';
 import OnBoarding from '../onboarding';
 import TradeBots from '../mainPage/pages/TradeBots';
 import Dashboard from '../mainPage/pages/Dashboard';
+import ErrorNotFound from './pages/ErrorNotFound';
+import ErrorServer from './pages/ErrorServer';
 
 const router = createBrowserRouter([
   {
@@ -12,6 +14,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Navigate to='/onboarding' replace />,
+    errorElement: <ErrorNotFound />,
   },
   {
     path: '/',
@@ -26,6 +29,14 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
     ],
+  },
+  {
+    path: '/notFound',
+    element: <ErrorNotFound />,
+  },
+  {
+    path: '/error',
+    element: <ErrorServer />,
   },
 ]);
 

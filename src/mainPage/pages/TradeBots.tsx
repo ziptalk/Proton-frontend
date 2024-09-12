@@ -5,11 +5,11 @@ import BotBoard from '../components/BotBoard';
 import { IcSearch, IcSort } from '../assets/0_index';
 import { DUMMY_BOT } from '../constants/mainPage_MOCK';
 import { useOutletContext } from 'react-router-dom';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { TRADE_BOTS_ORDER, TRADE_BOTS_SORT } from '../constants/TRADE_BOTS_API';
 import { ITRADEBOTS } from '../types/dashboardType';
 import useMobile from '../../common/hooks/useMobile';
+import instance from '../../common/apis/instance';
 
 const TradeBots = () => {
   // const data = MOCK_TRADEBOTS;
@@ -30,7 +30,7 @@ const TradeBots = () => {
   const getData = async (_sortKey: string) => {
     try {
       const sortKey = TRADE_BOTS_SORT[_sortKey];
-      const { data } = await axios.get(
+      const { data } = await instance.get(
         `${base_url}/api/trade-bots?sort=${sortKey}&order=${TRADE_BOTS_ORDER[1]}`
       );
       setData(data);
@@ -53,7 +53,7 @@ const TradeBots = () => {
         return;
       }
       try {
-        const { data } = await axios.get(
+        const { data } = await instance.get(
           `${base_url}/api/trade-bots?search=${searchValue}`
         );
         setData(data);

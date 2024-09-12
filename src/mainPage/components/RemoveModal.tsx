@@ -7,6 +7,7 @@ import { IcModalX } from '../assets/0_index';
 import axios from 'axios';
 import { useRef, useState } from 'react';
 import useOutsideClick from '../../common/hooks/useOutsideClick';
+import instance from '../../common/apis/instance';
 
 const RemoveModal = ({
   isOpen,
@@ -32,7 +33,7 @@ const RemoveModal = ({
     };
     try {
       setIsLoading(true);
-      await axios.post(`${base_url}/api/remove`, postBody);
+      await instance.post(`${base_url}/api/remove`, postBody);
       onClose();
       setIsLoading(false);
       window.location.reload();

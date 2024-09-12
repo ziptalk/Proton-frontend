@@ -15,8 +15,8 @@ import { formatNumberValue } from '../../common/utils/formatNumberValue';
 import { formatPercentValue } from '../../common/utils/formatPercentValue';
 import PreviewChart from './PreviewChart';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { IChartData } from '../types/pnlChartType';
+import instance from '../../common/apis/instance';
 
 interface IBotBoardProps {
   data: ITRADEBOTS;
@@ -45,7 +45,7 @@ const BotBoard = ({
 
   const getData = async () => {
     try {
-      const { data } = await axios.get(
+      const { data } = await instance.get(
         `${base_url}/api/PnLChart?bot_id=${active}&user_id=${user_id}&timeframe=5`
       );
       setChartData(data.data);

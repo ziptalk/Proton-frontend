@@ -6,7 +6,6 @@ import {
   STCOMBlueBtn,
 } from '../../common/styles/commonStyleComs';
 import DropDown from './DropDown';
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { IPnlChart } from '../types/pnlChartType';
 import { DEPOSIT_PLACEHOLDER } from '../constants/DEPOSIT_PLACEHOLDER';
@@ -18,6 +17,7 @@ import { depositTransfer } from '../../contract/deposit';
 import { slideUp } from '../../common/utils/animation';
 import IconTriangleDown from '../../common/assets/IconTriangleDown';
 import IconTriangleUp from '../../common/assets/IconTriangleUp';
+import instance from '../../common/apis/instance';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
@@ -62,7 +62,7 @@ const BotModal = ({
 
   const getData = async () => {
     try {
-      const { data } = await axios.get(
+      const { data } = await instance.get(
         `${base_url}/api/PnLChart?bot_id=${botId}&user_id=${user_id}&timeframe=5`
       );
       // if (data.Available === 0) {
@@ -94,7 +94,7 @@ const BotModal = ({
         bot_id: id,
         amount: _amount, // 입금할 금액
       };
-      await axios.post(`${base_url}/api/deposit`, postData);
+      await instance.post(`${base_url}/api/deposit`, postData);
       onClose();
       setIsLoading('Deposit');
       showToast('Your deposit has been successfully completed!');
