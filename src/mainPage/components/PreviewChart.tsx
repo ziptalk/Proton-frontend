@@ -10,7 +10,7 @@ const PreviewChart = ({ chartData }: { chartData: IChartData[] }) => {
       name: '차트 미리보기',
       data: chartData?.map((item) => [
         new Date(item.createdAt).getTime(),
-        item.balance,
+        item.pnlRate,
       ]),
       // data: [
       //   [new Date('2024-08-01').getTime(), 10],
