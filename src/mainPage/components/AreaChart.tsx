@@ -12,6 +12,7 @@ const getYRange = (data: IChartData[]) => {
 };
 
 const AreaChart = ({ chartData }: { chartData: IChartData[] }) => {
+  console.log(chartData);
   const isMobile = useMobile();
   const { minY, maxY } = getYRange(chartData);
   const series = [
@@ -63,7 +64,7 @@ const AreaChart = ({ chartData }: { chartData: IChartData[] }) => {
     },
     xaxis: {
       type: 'category',
-      tickAmount: 4,
+      tickAmount: 3,
       tickPlacement: 'on',
       labels: {
         formatter: (value) => {
