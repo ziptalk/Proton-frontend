@@ -12,7 +12,6 @@ const getYRange = (data: IChartData[]) => {
 };
 
 const AreaChart = ({ chartData }: { chartData: IChartData[] }) => {
-  console.log(chartData);
   const isMobile = useMobile();
   const { minY, maxY } = getYRange(chartData);
   const series = [
