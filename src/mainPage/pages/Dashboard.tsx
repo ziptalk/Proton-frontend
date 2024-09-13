@@ -37,7 +37,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
         <div>
           <label>Total Balance</label>
           <StTotalTokenValue>
-            {formatPriceValue(data.total_balance)}
+            {formatPriceValue(data.total_balance)} {TOKEN}
           </StTotalTokenValue>
           <StTotalDollarValue>
             ≈ ${formatPriceValue(data.total_balance_usdt)}
@@ -47,7 +47,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
           <label>Total Profit</label>
           <StTotalTokenValue>
             <StColor isPositive={data.total_profit >= 0}>
-              {formatPriceValue(data.total_profit)} NTRN
+              {formatPriceValue(data.total_profit)} {TOKEN}
             </StColor>
           </StTotalTokenValue>
           <StTotalDollarValue>
