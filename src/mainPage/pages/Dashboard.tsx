@@ -19,8 +19,8 @@ import { dashboardBackIMG } from '../assets/0_index';
 import useTablet from '../../common/hooks/useTablet';
 import TableTablet from '../components/TableTablet';
 import { MOCK_DASHBOARD } from '../constants/mainPage_MOCK';
-import { formatPercentValue } from '../../common/utils/formatPercentValue';
 import instance from '../../common/apis/instance';
+import { formatPercentValue } from '../../common/utils/formatPercentValue';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -53,7 +53,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
           </StTotalTokenValue>
           <StTotalDollarValue>
             <StColor isPositive={data.total_profit >= 0}>
-              ≈ ${formatPriceValue(data.total_profit_usdt)}
+              ≈ ${Math.abs(Number(formatPercentValue(data.total_profit_usdt)))}
             </StColor>
           </StTotalDollarValue>
         </div>
@@ -96,7 +96,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
                 </StTableCell>
                 <StTableCell>
                   <StColor isPositive={item.daily_pnl >= 0}>
-                    {formatPercentValue(item.daily_pnl)} %
+                    {formatPriceValue(item.daily_pnl)} %
                   </StColor>
                 </StTableCell>
                 <StTableCell>

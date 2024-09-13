@@ -2,7 +2,6 @@ import {
   STCOMBlueBtn,
   STCOMGreyBtn,
 } from '../../common/styles/commonStyleComs';
-import { formatPercentValue } from '../../common/utils/formatPercentValue';
 import { formatPriceValue } from '../../common/utils/formatPriceValue';
 import { DASHBORADTABLEHEADER } from '../constants/DASHBOARD';
 import { IBOTS } from '../types/dashboardType';
@@ -39,7 +38,7 @@ const TableTablet = ({
             <span>{DASHBORADTABLEHEADER[3]}</span>
             <span>
               <StColor isPositive={item.daily_pnl >= 0}>
-                {formatPercentValue(item.daily_pnl)} %
+                {formatPriceValue(item.daily_pnl)} %
               </StColor>
             </span>
           </StRow>
