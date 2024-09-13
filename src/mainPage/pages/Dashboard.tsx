@@ -20,7 +20,6 @@ import useTablet from '../../common/hooks/useTablet';
 import TableTablet from '../components/TableTablet';
 import { MOCK_DASHBOARD } from '../constants/mainPage_MOCK';
 import instance from '../../common/apis/instance';
-import { formatPercentValue } from '../../common/utils/formatPercentValue';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -53,7 +52,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
           </StTotalTokenValue>
           <StTotalDollarValue>
             <StColor isPositive={data.total_profit >= 0}>
-              ≈ ${Math.abs(Number(formatPercentValue(data.total_profit_usdt)))}
+              ≈ ${Math.abs(Number(formatPriceValue(data.total_profit_usdt)))}
             </StColor>
           </StTotalDollarValue>
         </div>
