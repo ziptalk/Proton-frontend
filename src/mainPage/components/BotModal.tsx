@@ -43,7 +43,7 @@ const BotModal = ({
   const [balance, setBalance] = useState('-');
   const [user_id, setUserId] = useState(localStorage.getItem('NEUTRONADDRESS'));
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState('Deposit');
+  const [isLoading, setIsLoading] = useState('Staking');
   const [isFocused, setIsFocused] = useState(false);
   useOutsideClick(wrapperRef, onClose);
 
