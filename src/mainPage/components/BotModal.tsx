@@ -20,6 +20,7 @@ import IconTriangleUp from '../../common/assets/IconTriangleUp';
 import instance from '../../common/apis/instance';
 import BotModalReceive from './BotModalReceive';
 import { parseNumber } from '../../common/utils/parseNumber';
+import { BeatLoader } from 'react-spinners';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
@@ -61,6 +62,7 @@ const BotModal = ({
     if (!user_id) return;
     const b = await getBalance(user_id);
     setBalance(b);
+    if (parseNumber(b) < MINVAL) setIsLoading('Insufficient balance');
   };
 
   const getData = async () => {
@@ -165,7 +167,11 @@ const BotModal = ({
             }
             onClick={() => deposit(botId)}
           >
-            {isLoading}
+            {balance !== '-' ? (
+              <p> {isLoading}</p>
+            ) : (
+              <BeatLoader size='10' color='#ffffff' />
+            )}
           </StDepositBtn>
           <StModalNotice>
             <IcNotice />
@@ -336,7 +342,9 @@ const StPnl = styled.p<{ isPositive: boolean }>`
 const StDepositBtn = styled(STCOMBlueBtn)<{ disabled: boolean }>`
   width: 100%;
   min-height: 4.6rem;
-  ${(props) => props.disabled && ' background-color: #ccc'};
+  /* ${(props) => props.disabled && ' background-color: #ccc'}; */
+  background-color: ${({ theme }) => theme.colors.qve_blue};
+  ${({ disabled }) => disabled && 'opacity:0.6'};
 `;
 
 const StModalNotice = styled.div`
