@@ -105,9 +105,7 @@ const Announcement = () => {
           Unlock the Full Potential of Your
         </St.Announcement.Text>
         <St.Announcement.Text>Investments with Proton!</St.Announcement.Text>
-        <St.Announcement.Background
-          src={announceIMG}
-        ></St.Announcement.Background>
+        <St.Announcement.Background src={announceIMG} />
       </St.Announcement.Container>
     </St.Announcement.GlassWrapper>
   );
