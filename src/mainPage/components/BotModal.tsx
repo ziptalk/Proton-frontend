@@ -20,7 +20,7 @@ import IconTriangleUp from '../../common/assets/IconTriangleUp';
 import instance from '../../common/apis/instance';
 import BotModalReceive from './BotModalReceive';
 import { parseNumber } from '../../common/utils/parseNumber';
-import { BeatLoader } from 'react-spinners';
+import { BeatLoader, RingLoader } from 'react-spinners';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
@@ -168,9 +168,9 @@ const BotModal = ({
             onClick={() => deposit(botId)}
           >
             {balance !== '-' ? (
-              <p> {isLoading}</p>
+              <p>{isLoading}</p>
             ) : (
-              <BeatLoader size='10' color='#ffffff' />
+              <RingLoader size='30' color='#ffffff' />
             )}
           </StDepositBtn>
           <StModalNotice>
@@ -342,6 +342,9 @@ const StPnl = styled.p<{ isPositive: boolean }>`
 const StDepositBtn = styled(STCOMBlueBtn)<{ disabled: boolean }>`
   width: 100%;
   min-height: 4.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* ${(props) => props.disabled && ' background-color: #ccc'}; */
   background-color: ${({ theme }) => theme.colors.qve_blue};
   ${({ disabled }) => disabled && 'opacity:0.6'};
