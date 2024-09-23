@@ -18,6 +18,8 @@ import { slideUp } from '../../common/utils/animation';
 import IconTriangleDown from '../../common/assets/IconTriangleDown';
 import IconTriangleUp from '../../common/assets/IconTriangleUp';
 import instance from '../../common/apis/instance';
+import BotModalReceive from './BotModalReceive';
+import { parseNumber } from '../../common/utils/parseNumber';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
@@ -41,6 +43,7 @@ const BotModal = ({
   const [user_id, setUserId] = useState(localStorage.getItem('NEUTRONADDRESS'));
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState('Deposit');
+  const [isFocused, setIsFocused] = useState(false);
   useOutsideClick(wrapperRef, onClose);
 
   useEffect(() => {
@@ -76,6 +79,10 @@ const BotModal = ({
 
   const handleDepositValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
+    if (parseNumber(rawValue) > parseNumber(balance)) {
+      setDepositValue(balance);
+      return;
+    }
     const formatValue = formatNumberWithCommas(rawValue);
     setDepositValue(formatValue);
   };
@@ -125,14 +132,19 @@ const BotModal = ({
                 NTRN
               </StAvailable>
             </StSpaceBetween>
-            <StinputContainer>
+            <StinputContainer isFocused={isFocused || depositValue.length > 0}>
               <input
                 placeholder={placeholder}
                 value={depositValue}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
                 onChange={handleDepositValue}
               />
               <button onClick={() => setDepositValue(balance)}>Max</button>
             </StinputContainer>
+            {(isFocused || depositValue) && (
+              <BotModalReceive value={parseNumber(depositValue)} />
+            )}
           </StColumn>
           <StGraphContaienr>
             <StPnlWrapper>
@@ -185,7 +197,7 @@ const StBotModalBackGround = styled(STCOMBackground)`
 const StScroll = styled.div`
   overflow-y: auto;
   width: 56rem;
-  max-height: 76rem;
+  max-height: 80rem;
   height: 100%;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.colors.invest_background};
@@ -252,9 +264,9 @@ const StAvailable = styled.p`
   }
 `;
 
-const StinputContainer = styled.div`
+const StinputContainer = styled.div<{ isFocused: boolean }>`
   width: 100%;
-  height: 5rem;
+  height: ${({ isFocused }) => (isFocused ? '6rem' : '5rem')};
   padding: 1.4rem 1.5rem;
   border-radius: 6px;
   border: 0.1rem solid ${({ theme }) => theme.colors.not_important};
