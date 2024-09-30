@@ -13,8 +13,12 @@ import IcDropdown from './dropdownIcon.svg?react';
 import IcDropUp from './dropupIcon.svg?react';
 import LogoGradationBot from './gradationBotLogo.svg?react';
 import LogoNeutron from './neutronLogo.svg?react';
-
+import IcSwap from './swapIcon.svg?react';
 import dashboardBackIMG from './dashboardBackIMG.webp';
+
+import swapUniswap from './swap_uniswap.webp';
+import swapRaydium from './swap_raydium.webp';
+import swapJito from './swap_jito.webp';
 
 export {
   announceIMG,
@@ -33,4 +37,8 @@ export {
   IcDropUp,
   LogoNeutron,
   dashboardBackIMG,
+  IcSwap,
+  swapUniswap,
+  swapRaydium,
+  swapJito,
 };

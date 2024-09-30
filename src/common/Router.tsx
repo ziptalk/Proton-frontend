@@ -5,6 +5,7 @@ import TradeBots from '../mainPage/pages/TradeBots';
 import Dashboard from '../mainPage/pages/Dashboard';
 import ErrorNotFound from './pages/ErrorNotFound';
 import ErrorServer from './pages/ErrorServer';
+import Swap from '../mainPage/pages/Swap';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <Dashboard />,
+      },
+      {
+        path: 'swap',
+        element: <Swap />,
       },
     ],
   },

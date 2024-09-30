@@ -60,7 +60,7 @@ const fonts = {
   body_3: FONT('Pretendard Variable', 1.6, 'normal', '400', '140', 0),
   body_3m: FONT('Montserrat', 1.6, 'normal', '500', '140', 0),
   body: FONT('Pretendard Variable', 1.1, 'normal', '400', 'auto', 0),
-  caption: FONT('Pretendard Variable', 1.4, 'normal', 'semibold', '100', 0),
+  caption: FONT('Pretendard Variable', 1.4, 'normal', 'semibold', '120', 0),
   small_phrase: FONT(
     'Pretendard Variable',
     1.4,

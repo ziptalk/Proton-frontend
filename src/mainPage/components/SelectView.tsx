@@ -1,21 +1,28 @@
 import styled from '@emotion/styled';
-import { IcDashboard, IcTradeBots } from '../assets/0_index';
+import { IcDashboard, IcSwap, IcTradeBots } from '../assets/0_index';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const VIEW = {
   TRADE_BOTS: 'Trade Bots',
   DASHBOARD: 'Dashboard',
+  Swap: 'Swap on DEX',
 };
 
 const SelectView = ({ view }: { view: string }) => {
   const navigate = useNavigate();
 
   const handleView = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (e.currentTarget.name === VIEW.TRADE_BOTS) {
-      navigate('/tradeBots');
-    } else {
-      navigate('/dashboard');
+    switch (e.currentTarget.name) {
+      case VIEW.TRADE_BOTS:
+        navigate('/tradeBots');
+        break;
+      case VIEW.Swap:
+        navigate('/swap');
+        break;
+      case VIEW.DASHBOARD:
+        navigate('/dashboard');
+        break;
     }
   };
   return (
@@ -28,6 +35,15 @@ const SelectView = ({ view }: { view: string }) => {
       >
         <StIcon>{view === VIEW.TRADE_BOTS ? <IcTradeBots /> : <></>}</StIcon>
         {VIEW.TRADE_BOTS}
+      </StBtn>
+      <StBtn
+        selectView={view}
+        type='button'
+        name={VIEW.Swap}
+        onClick={handleView}
+      >
+        <StIcon>{view === VIEW.Swap ? <IcSwap /> : <></>}</StIcon>
+        {VIEW.Swap}
       </StBtn>
       <StBtn
         selectView={view}
@@ -50,13 +66,15 @@ const StContainer = styled.div`
     width: 100%;
     justify-content: space-between;
   }
+  gap: 0.5rem;
 `;
 
 const StBtn = styled.button<{
   selectView: string;
   name: string;
 }>`
-  width: 13.6rem;
+  width: fit-content;
+  padding: 0 0.5rem;
   height: 6.6rem;
   display: flex;
   justify-content: center;

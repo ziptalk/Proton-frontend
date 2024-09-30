@@ -18,6 +18,9 @@ import { slideUp } from '../../common/utils/animation';
 import IconTriangleDown from '../../common/assets/IconTriangleDown';
 import IconTriangleUp from '../../common/assets/IconTriangleUp';
 import instance from '../../common/apis/instance';
+import BotModalReceive from './BotModalReceive';
+import { parseNumber } from '../../common/utils/parseNumber';
+import { RingLoader } from 'react-spinners';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
@@ -40,7 +43,8 @@ const BotModal = ({
   const [balance, setBalance] = useState('-');
   const [user_id, setUserId] = useState(localStorage.getItem('NEUTRONADDRESS'));
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState('Deposit');
+  const [isLoading, setIsLoading] = useState('Staking');
+  const [isFocused, setIsFocused] = useState(false);
   useOutsideClick(wrapperRef, onClose);
 
   useEffect(() => {
@@ -58,6 +62,7 @@ const BotModal = ({
     if (!user_id) return;
     const b = await getBalance(user_id);
     setBalance(b);
+    if (parseNumber(b) < MINVAL) setIsLoading('Insufficient balance');
   };
 
   const getData = async () => {
@@ -76,6 +81,10 @@ const BotModal = ({
 
   const handleDepositValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
+    if (parseNumber(rawValue) > parseNumber(balance)) {
+      setDepositValue(balance);
+      return;
+    }
     const formatValue = formatNumberWithCommas(rawValue);
     setDepositValue(formatValue);
   };
@@ -125,14 +134,19 @@ const BotModal = ({
                 NTRN
               </StAvailable>
             </StSpaceBetween>
-            <StinputContainer>
+            <StinputContainer isFocused={isFocused || depositValue.length > 0}>
               <input
                 placeholder={placeholder}
                 value={depositValue}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
                 onChange={handleDepositValue}
               />
               <button onClick={() => setDepositValue(balance)}>Max</button>
             </StinputContainer>
+            {(isFocused || depositValue) && (
+              <BotModalReceive value={parseNumber(depositValue)} />
+            )}
           </StColumn>
           <StGraphContaienr>
             <StPnlWrapper>
@@ -153,7 +167,11 @@ const BotModal = ({
             }
             onClick={() => deposit(botId)}
           >
-            {isLoading}
+            {balance !== '-' ? (
+              <p>{isLoading}</p>
+            ) : (
+              <RingLoader size='30' color='#ffffff' />
+            )}
           </StDepositBtn>
           <StModalNotice>
             <IcNotice />
@@ -185,7 +203,7 @@ const StBotModalBackGround = styled(STCOMBackground)`
 const StScroll = styled.div`
   overflow-y: auto;
   width: 56rem;
-  max-height: 76rem;
+  max-height: 80rem;
   height: 100%;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.colors.invest_background};
@@ -252,9 +270,9 @@ const StAvailable = styled.p`
   }
 `;
 
-const StinputContainer = styled.div`
+const StinputContainer = styled.div<{ isFocused: boolean }>`
   width: 100%;
-  height: 5rem;
+  height: ${({ isFocused }) => (isFocused ? '6rem' : '5rem')};
   padding: 1.4rem 1.5rem;
   border-radius: 6px;
   border: 0.1rem solid ${({ theme }) => theme.colors.not_important};
@@ -324,7 +342,12 @@ const StPnl = styled.p<{ isPositive: boolean }>`
 const StDepositBtn = styled(STCOMBlueBtn)<{ disabled: boolean }>`
   width: 100%;
   min-height: 4.6rem;
-  ${(props) => props.disabled && ' background-color: #ccc'};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* ${(props) => props.disabled && ' background-color: #ccc'}; */
+  background-color: ${({ theme }) => theme.colors.qve_blue};
+  ${({ disabled }) => disabled && 'opacity:0.6'};
 `;
 
 const StModalNotice = styled.div`

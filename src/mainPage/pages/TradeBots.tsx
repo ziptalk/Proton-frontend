@@ -63,9 +63,10 @@ const TradeBots = () => {
     }
   };
 
-  return data ? (
+  return (
     <StContainer>
       <SelectView view={VIEW.TRADE_BOTS} />
+
       <StTopContainer>
         <StSearchInput>
           <IcSearch />
@@ -83,32 +84,33 @@ const TradeBots = () => {
           <SortBtn title='Runtime' getData={getData} />
         </StSortContainer>
       </StTopContainer>
-
-      <StBotsContainer>
-        {data?.map((bot) => (
-          <BotBoard
-            key={bot.bot_id}
-            data={bot}
-            active={bot.bot_id}
-            openModal={openBotModal}
-            openUnConnectModal={openUnConnectModal}
-            showToast={showToast}
-          />
-        ))}
-        {!searchValue && (
-          <BotBoard
-            key={DUMMY_BOT.bot_id}
-            data={DUMMY_BOT}
-            active={DUMMY_BOT.bot_id}
-            openModal={openBotModal}
-            openUnConnectModal={openUnConnectModal}
-            showToast={showToast}
-          />
-        )}
-      </StBotsContainer>
+      {data ? (
+        <StBotsContainer>
+          {data?.map((bot) => (
+            <BotBoard
+              key={bot.bot_id}
+              data={bot}
+              active={bot.bot_id}
+              openModal={openBotModal}
+              openUnConnectModal={openUnConnectModal}
+              showToast={showToast}
+            />
+          ))}
+          {!searchValue && (
+            <BotBoard
+              key={DUMMY_BOT.bot_id}
+              data={DUMMY_BOT}
+              active={DUMMY_BOT.bot_id}
+              openModal={openBotModal}
+              openUnConnectModal={openUnConnectModal}
+              showToast={showToast}
+            />
+          )}
+        </StBotsContainer>
+      ) : (
+        <>loading..</>
+      )}
     </StContainer>
-  ) : (
-    <>loading..</>
   );
 };
 
