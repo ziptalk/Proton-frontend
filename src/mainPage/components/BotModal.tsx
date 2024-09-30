@@ -20,7 +20,7 @@ import IconTriangleUp from '../../common/assets/IconTriangleUp';
 import instance from '../../common/apis/instance';
 import BotModalReceive from './BotModalReceive';
 import { parseNumber } from '../../common/utils/parseNumber';
-import { BeatLoader, RingLoader } from 'react-spinners';
+import { RingLoader } from 'react-spinners';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
