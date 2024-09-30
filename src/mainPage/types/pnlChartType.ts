@@ -6,6 +6,7 @@ export interface IPnlChart {
   data: IChartData[];
   daily_PnL: number;
   detailInformation: IDetail;
+  domesticRate: number;
 }
 
 export interface IChartData {
@@ -17,4 +18,5 @@ export interface IDetail {
   apy: number;
   mdd: number;
   winRate: number;
+  healthFactor: number;
 }

@@ -1,8 +1,7 @@
 export interface IDashboard {
   total_balance: number;
   total_profit: number;
-  total_balance_usdt: number;
-  total_profit_usdt: number;
+  domesticRate: number;
   bots: IBOTS[];
 }
 
