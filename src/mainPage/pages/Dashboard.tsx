@@ -40,7 +40,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
             {formatPriceValue(data.total_balance)} {TOKEN}
           </StTotalTokenValue>
           <StTotalDollarValue>
-            ≈ ${formatPriceValue(data.total_balance_usdt)}
+            ≈ ${formatPriceValue(data.total_balance * data.domesticRate)}
           </StTotalDollarValue>
         </div>
         <div>
@@ -52,7 +52,10 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
           </StTotalTokenValue>
           <StTotalDollarValue>
             <StColor isPositive={data.total_profit >= 0}>
-              ≈ ${Math.abs(Number(formatPriceValue(data.total_profit_usdt)))}
+              ≈ $
+              {Math.abs(
+                Number(formatPriceValue(data.total_profit * data.domesticRate))
+              )}
             </StColor>
           </StTotalDollarValue>
         </div>

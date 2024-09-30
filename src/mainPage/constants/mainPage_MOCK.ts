@@ -3,8 +3,7 @@ import { IDashboard, ITRADEBOTS } from '../types/dashboardType';
 export const MOCK_DASHBOARD: IDashboard = {
   total_balance: 0,
   total_profit: 0,
-  total_balance_usdt: 0,
-  total_profit_usdt: 0,
+  domesticRate: 2.3,
   bots: [
     // {
     //   bot_name: 'Cyclic Arb bot',

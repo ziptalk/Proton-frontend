@@ -145,7 +145,10 @@ const BotModal = ({
               <button onClick={() => setDepositValue(balance)}>Max</button>
             </StinputContainer>
             {(isFocused || depositValue) && (
-              <BotModalReceive value={parseNumber(depositValue)} />
+              <BotModalReceive
+                value={parseNumber(depositValue)}
+                domesticRate={data.domesticRate}
+              />
             )}
           </StColumn>
           <StGraphContaienr>
