@@ -26,10 +26,13 @@ const ConnectWallet = ({
     try {
       // 네트워크 체인 ID
       const chainId = 'neutron-1'; // 예: Cosmos Hub의 체인 ID
+      await window.keplr.suggestToken(
+        chainId,
+        'neutron1yvfuf0p6nqz8j2alxg0ev4y2zq8hnywqv0wa69p5x3yfjzcw5stsvv3ywj'
+      );
 
       // Keplr 지갑에서 오프라인 서명자 가져오기
       const offlineSigner = window.keplr.getOfflineSigner(chainId);
-
       // 계정 정보 가져오기
       const accounts = await offlineSigner.getAccounts();
       const userAddress = accounts[0].address;
