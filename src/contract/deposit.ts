@@ -2,7 +2,7 @@ import { Coin, OfflineDirectSigner } from '@cosmjs/proto-signing';
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 import { GasPrice } from '@cosmjs/stargate';
 import { OfflineAminoSigner } from '@keplr-wallet/types';
-import { CONTRANCT_INFO } from '../common/constants/CONTRACTINFO';
+import { CONTRANCT_INFO } from './CONTRACTINFO';
 
 // 1. 사용자가 amount 입력 후 minting → 유저의 neutron 을 amount 만큼 봇 주소로 transfer
 // 2. 유저의 deposit amount를 컨트랙트에 저장
