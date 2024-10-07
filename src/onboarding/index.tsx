@@ -18,7 +18,6 @@ import { ABOUTQVE } from './constants/constants.ts';
 import TradeNowBtn from './Components/TradeNowBtn.tsx';
 import Footer from '../common/components/Footer.tsx';
 import { useRef } from 'react';
-import axios from 'axios';
 import { formatPriceValue } from '../common/utils/formatPriceValue.ts';
 import { STCOMGlassWrapper } from '../common/styles/commonStyleComs.ts';
 import { ONBOARDING4 } from './constants/constants.ts';
