@@ -1,8 +1,7 @@
-// import nuetron_chainInfo from './network_info';
-
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { IcProtonIcon, IcWallet } from './assets/0_indes';
+import { QVETOKEN_ADDRESS } from './CHAIN_INFO';
 // import { useNavigate } from 'react-router-dom';
 
 const ConnectWallet = ({
@@ -25,11 +24,8 @@ const ConnectWallet = ({
     }
     try {
       // 네트워크 체인 ID
-      const chainId = 'neutron-1'; // 예: Cosmos Hub의 체인 ID
-      await window.keplr.suggestToken(
-        chainId,
-        'neutron1yvfuf0p6nqz8j2alxg0ev4y2zq8hnywqv0wa69p5x3yfjzcw5stsvv3ywj'
-      );
+      const chainId = 'neutron-1';
+      await window.keplr.suggestToken(chainId, QVETOKEN_ADDRESS);
 
       // Keplr 지갑에서 오프라인 서명자 가져오기
       const offlineSigner = window.keplr.getOfflineSigner(chainId);

@@ -21,6 +21,7 @@ import instance from '../../common/apis/instance';
 import BotModalReceive from './BotModalReceive';
 import { parseNumber } from '../../common/utils/parseNumber';
 import { RingLoader } from 'react-spinners';
+import { getCollateralBalance } from '../../contract/getCollateralBalance';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
@@ -45,6 +46,7 @@ const BotModal = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState('Staking');
   const [isFocused, setIsFocused] = useState(false);
+  const [qveTokenBalance, setQveTokenBalance] = useState<number>(0);
   useOutsideClick(wrapperRef, onClose);
 
   useEffect(() => {
@@ -55,6 +57,7 @@ const BotModal = ({
       setPlaceholder(DEPOSIT_PLACEHOLDER.notConnectWallet);
     }
     fetchBalance();
+    getQveToken();
   }, []);
   if (!isOpen) return null;
 
@@ -63,6 +66,11 @@ const BotModal = ({
     const b = await getBalance(user_id);
     setBalance(b);
     if (parseNumber(b) < MINVAL) setIsLoading('Insufficient balance');
+  };
+
+  const getQveToken = async () => {
+    const qveToken = await getCollateralBalance();
+    setQveTokenBalance(qveToken);
   };
 
   const getData = async () => {
@@ -148,6 +156,7 @@ const BotModal = ({
               <BotModalReceive
                 value={parseNumber(depositValue)}
                 domesticRate={data.domesticRate}
+                qveTokenBalance={qveTokenBalance}
               />
             )}
           </StColumn>
@@ -173,7 +182,7 @@ const BotModal = ({
             {balance !== '-' ? (
               <p>{isLoading}</p>
             ) : (
-              <RingLoader size='30' color='#ffffff' />
+              <RingLoader size='30px' color='#ffffff' />
             )}
           </StDepositBtn>
           <StModalNotice>

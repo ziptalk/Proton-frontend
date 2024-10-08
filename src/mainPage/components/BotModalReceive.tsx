@@ -5,9 +5,14 @@ import { formatPriceValue } from '../../common/utils/formatPriceValue';
 interface IReceiveProps {
   value: number;
   domesticRate: number;
+  qveTokenBalance: number;
 }
 
-const BotModalReceive = ({ value, domesticRate }: IReceiveProps) => {
+const BotModalReceive = ({
+  value,
+  domesticRate,
+  qveTokenBalance,
+}: IReceiveProps) => {
   return (
     <StContainer>
       <StHeader>
@@ -22,7 +27,7 @@ const BotModalReceive = ({ value, domesticRate }: IReceiveProps) => {
         </StLeftContent>
         <StRightContent>
           <div>qveNTRN</div>
-          <StBalance>Balance 0.00</StBalance>
+          <StBalance>Balance {formatPriceValue(qveTokenBalance)}</StBalance>
         </StRightContent>
       </StContent>
     </StContainer>
