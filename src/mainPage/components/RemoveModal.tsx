@@ -12,6 +12,7 @@ import instance from '../../common/apis/instance';
 import useQveToken from '../../common/hooks/useQveToken';
 import { useNavigate } from 'react-router-dom';
 import { removeTokens } from '../../contract/remove';
+import { useQueryClient } from '@tanstack/react-query';
 
 const RemoveModal = ({
   isOpen,
@@ -29,14 +30,16 @@ const RemoveModal = ({
   useOutsideClick(wrapperRef, onClose);
   const [isLoading, setIsLoading] = useState(false);
   const qveTokenBalance = useQveToken();
+  const queryClient = useQueryClient();
+  const [address] = useState(localStorage.getItem('NEUTRONADDRESS'));
   if (!isOpen || !totalInvest || !qveTokenBalance) return;
 
   const remove = async () => {
-    if (!localStorage.getItem('NEUTRONADDRESS')) return;
+    if (!address) return;
     const base_url = import.meta.env.VITE_BASE_URL;
 
     const postBody = {
-      user_id: localStorage.getItem('NEUTRONADDRESS'),
+      user_id: address,
       bot_id: botId,
     };
     try {
@@ -45,7 +48,8 @@ const RemoveModal = ({
       await instance.post(`${base_url}/api/remove`, postBody);
       onClose();
       setIsLoading(false);
-      window.location.reload();
+
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     } catch (err) {
       setIsLoading(false);
       if (axios.isAxiosError(err) && err.response) {

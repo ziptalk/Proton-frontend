@@ -22,6 +22,7 @@ import BotModalReceive from './BotModalReceive';
 import { parseNumber } from '../../common/utils/parseNumber';
 import { RingLoader } from 'react-spinners';
 import useQveToken from '../../common/hooks/useQveToken';
+import { useQueryClient } from '@tanstack/react-query';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
@@ -30,13 +31,11 @@ const BotModal = ({
   onClose,
   botId,
   showToast,
-  onDataRefreshRequest,
 }: {
   isOpen: boolean;
   onClose: () => void;
   botId: string | null;
   showToast: (message: string) => void;
-  onDataRefreshRequest: () => void;
 }) => {
   const [depositValue, setDepositValue] = useState<string>('');
   const [placeholder, setPlaceholder] = useState(DEPOSIT_PLACEHOLDER.default);
@@ -48,6 +47,7 @@ const BotModal = ({
   const [isFocused, setIsFocused] = useState(false);
   const qveTokenBalance = useQveToken();
   useOutsideClick(wrapperRef, onClose);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     // if (!user_id) return;
@@ -109,7 +109,7 @@ const BotModal = ({
       onClose();
       setIsLoading('Deposit');
       showToast('Your deposit has been successfully completed!');
-      onDataRefreshRequest();
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     } catch (err) {
       setIsLoading('Deposit');
       console.log(err);

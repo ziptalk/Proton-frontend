@@ -12,6 +12,9 @@ const getWalletForChain = async (): Promise<
   return signer;
 };
 
-const wallet = await getWalletForChain();
+const defineWallet = async () => {
+  const wallet = await getWalletForChain();
+  return wallet;
+};
 
-export default wallet;
+export default defineWallet;

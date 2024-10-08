@@ -1,7 +1,7 @@
 //컨트랙트의 유저 담보 토큰을 조회하는 함수
 
 import { QVETOKEN_ADDRESS } from '../wallet/CHAIN_INFO';
-import client from './defineClient';
+import defineClient from './defineClient';
 
 const address = localStorage.getItem('NEUTRONADDRESS');
 
@@ -14,6 +14,7 @@ const formatAmount = (amount: number, decimalPlaces: number): number => {
 export const getCollateralBalance = async () => {
   if (!address) return;
 
+  const client = await defineClient();
   const msg = {
     balance: {
       address: address,
