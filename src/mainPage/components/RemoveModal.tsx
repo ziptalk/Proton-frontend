@@ -44,19 +44,19 @@ const RemoveModal = ({
     };
     try {
       setIsLoading(true);
-      await removeTokens(totalInvest * 0.8);
       await instance.post(`${base_url}/api/remove`, postBody);
+      await removeTokens(totalInvest * 0.8);
       onClose();
       setIsLoading(false);
 
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     } catch (err) {
-      setIsLoading(false);
       if (axios.isAxiosError(err) && err.response) {
         err.response.status === 499 &&
           alert('You can remove this bot after 3 days of deposing!');
         return;
       }
+      setIsLoading(false);
     }
   };
 
