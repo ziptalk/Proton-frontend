@@ -10,7 +10,7 @@ const Swap = () => {
       <StContent>
         {LINK_SWAP.map((item) => {
           return (
-            <StItem onClick={() => window.open(item.link)}>
+            <StItem key={item.name} onClick={() => window.open(item.link)}>
               <StIMG src={item.path} />
             </StItem>
           );

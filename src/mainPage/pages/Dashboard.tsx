@@ -27,7 +27,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
   const TOKEN = 'NTRN';
   const { openBotModal, openRemoveModal } = useOutletContext<{
     openBotModal: (id: string) => void;
-    openRemoveModal: (id: string) => void;
+    openRemoveModal: (id: string, totalInvest: number) => void;
   }>();
   const isTablet = useTablet();
 
@@ -116,7 +116,11 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
                     <StAddBtn onClick={() => openBotModal(item.bot_id)}>
                       Add
                     </StAddBtn>
-                    <StRemoveBtn onClick={() => openRemoveModal(item.bot_id)}>
+                    <StRemoveBtn
+                      onClick={() =>
+                        openRemoveModal(item.bot_id, item.total_investment)
+                      }
+                    >
                       Remove
                     </StRemoveBtn>
                   </div>

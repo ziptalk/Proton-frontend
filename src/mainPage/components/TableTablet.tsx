@@ -14,7 +14,7 @@ const TableTablet = ({
 }: {
   data: IBOTS[];
   openBotModal: (id: string) => void;
-  openRemoveModal: (id: string) => void;
+  openRemoveModal: (id: string, totalInvest: number) => void;
 }) => {
   const TOKEN = 'NTRN';
   return (
@@ -59,7 +59,11 @@ const TableTablet = ({
               }}
             >
               <StAddBtn onClick={() => openBotModal(item.bot_id)}>Add</StAddBtn>
-              <StRemoveBtn onClick={() => openRemoveModal(item.bot_id)}>
+              <StRemoveBtn
+                onClick={() =>
+                  openRemoveModal(item.bot_id, item.total_investment)
+                }
+              >
                 Remove
               </StRemoveBtn>
             </div>

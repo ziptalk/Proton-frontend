@@ -34,6 +34,7 @@ const MainPage = () => {
     openModal: openRemoveModal,
     closeModal: closeRemoveModal,
     botId: removeBotId,
+    totalInvest,
   } = useModal();
 
   //wallet Modal
@@ -80,6 +81,7 @@ const MainPage = () => {
           isOpen={isRemoveMoalOpen}
           onClose={closeRemoveModal}
           botId={removeBotId}
+          totalInvest={totalInvest}
         />
       )}
       {isWalletModalOpen && (
