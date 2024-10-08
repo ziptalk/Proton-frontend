@@ -17,13 +17,14 @@ import {
 import { ABOUTQVE } from './constants/constants.ts';
 import TradeNowBtn from './Components/TradeNowBtn.tsx';
 import Footer from '../common/components/Footer.tsx';
-import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import { useRef } from 'react';
 import { formatPriceValue } from '../common/utils/formatPriceValue.ts';
 import { STCOMGlassWrapper } from '../common/styles/commonStyleComs.ts';
 import { ONBOARDING4 } from './constants/constants.ts';
 import { LINKS } from '../common/constants/LINKS.ts';
 import useMobile from '../common/hooks/useMobile.tsx';
+import { useQuery } from '@tanstack/react-query';
+import { getData } from '../common/apis/apis.ts';
 
 interface IOnboardingProps {
   isMobile: boolean;
@@ -76,21 +77,8 @@ const OnBoarding = () => {
 };
 
 const OnBoarding1 = ({ isMobile }: IOnboardingProps) => {
-  const base_url = import.meta.env.VITE_BASE_URL;
-  const [totalValueLocked, setTotalValueLocked] = useState(0);
+  const { data } = useQuery({ queryKey: ['onboarding'], queryFn: getData });
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    try {
-      const { data } = await axios.get(`${base_url}/api/onboarding`);
-      setTotalValueLocked(data.total_value_locked);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
     <St.Section1.Container>
       <St.Section1.BackgroundImg1 />
@@ -105,7 +93,7 @@ const OnBoarding1 = ({ isMobile }: IOnboardingProps) => {
             <St.Mobile.ValueContainer>
               <St.Mobile.ValueLabel>Total Value Locked</St.Mobile.ValueLabel>
               <St.Mobile.Value>
-                $ {formatPriceValue(totalValueLocked)}
+                $ {formatPriceValue(data?.total_value_locked)}
               </St.Mobile.Value>
             </St.Mobile.ValueContainer>
           </St.Mobile.GlassWrapper>
@@ -123,7 +111,7 @@ const OnBoarding1 = ({ isMobile }: IOnboardingProps) => {
           </St.Section1.QVEIntroduce>
           <St.Section1.TotalValue>
             <p>Total Value Locked</p>
-            <p>$ {formatPriceValue(totalValueLocked)}</p>
+            <p>$ {formatPriceValue(data?.total_value_locked)}</p>
           </St.Section1.TotalValue>
         </St.Section1.ContentLayout>
       )}
