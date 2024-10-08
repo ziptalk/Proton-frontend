@@ -3,12 +3,16 @@ import { useState, useCallback, useEffect } from 'react';
 function useModal() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [botId, setBotId] = useState<string | null>(null);
+  const [totalInvest, setTotalInvest] = useState<number | null>(null);
 
-  const openModal = useCallback((id?: string) => {
+  const openModal = useCallback((id?: string, _totalInvest?: number) => {
     if (id) {
       setBotId(id);
     }
     setIsModalOpen(true);
+    if (_totalInvest) {
+      setTotalInvest(_totalInvest);
+    }
   }, []);
 
   const closeModal = useCallback(() => {
@@ -34,6 +38,7 @@ function useModal() {
     openModal,
     closeModal,
     botId,
+    totalInvest,
   };
 }
 

@@ -21,6 +21,8 @@ import instance from '../../common/apis/instance';
 import BotModalReceive from './BotModalReceive';
 import { parseNumber } from '../../common/utils/parseNumber';
 import { RingLoader } from 'react-spinners';
+import useQveToken from '../../common/hooks/useQveToken';
+import { useQueryClient } from '@tanstack/react-query';
 
 const base_url = import.meta.env.VITE_BASE_URL;
 const MINVAL = 10;
@@ -29,13 +31,11 @@ const BotModal = ({
   onClose,
   botId,
   showToast,
-  onDataRefreshRequest,
 }: {
   isOpen: boolean;
   onClose: () => void;
   botId: string | null;
   showToast: (message: string) => void;
-  onDataRefreshRequest: () => void;
 }) => {
   const [depositValue, setDepositValue] = useState<string>('');
   const [placeholder, setPlaceholder] = useState(DEPOSIT_PLACEHOLDER.default);
@@ -45,7 +45,9 @@ const BotModal = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState('Staking');
   const [isFocused, setIsFocused] = useState(false);
+  const qveTokenBalance = useQveToken();
   useOutsideClick(wrapperRef, onClose);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     // if (!user_id) return;
@@ -107,7 +109,7 @@ const BotModal = ({
       onClose();
       setIsLoading('Deposit');
       showToast('Your deposit has been successfully completed!');
-      onDataRefreshRequest();
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     } catch (err) {
       setIsLoading('Deposit');
       console.log(err);
@@ -148,6 +150,7 @@ const BotModal = ({
               <BotModalReceive
                 value={parseNumber(depositValue)}
                 domesticRate={data.domesticRate}
+                qveTokenBalance={qveTokenBalance}
               />
             )}
           </StColumn>
@@ -173,7 +176,7 @@ const BotModal = ({
             {balance !== '-' ? (
               <p>{isLoading}</p>
             ) : (
-              <RingLoader size='30' color='#ffffff' />
+              <RingLoader size='30px' color='#ffffff' />
             )}
           </StDepositBtn>
           <StModalNotice>

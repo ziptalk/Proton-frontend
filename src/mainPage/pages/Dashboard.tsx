@@ -12,22 +12,20 @@ import { IDashboard } from '../types/dashboardType';
 import { IcStrokeLogo } from '../../common/assets/0_index';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import ConnectWallet from '../../wallet/ConnectWallet';
-import axios from 'axios';
 import { formatPriceValue } from '../../common/utils/formatPriceValue';
 import BotLogo from '../../common/components/BotLogo';
 import { dashboardBackIMG } from '../assets/0_index';
 import useTablet from '../../common/hooks/useTablet';
 import TableTablet from '../components/TableTablet';
-import { MOCK_DASHBOARD } from '../constants/mainPage_MOCK';
-import instance from '../../common/apis/instance';
 
-const base_url = import.meta.env.VITE_BASE_URL;
+import { getDashboard } from '../../common/apis/apis';
+import { useQuery } from '@tanstack/react-query';
 
 const ShowDashboardData = ({ data }: { data: IDashboard }) => {
   const TOKEN = 'NTRN';
   const { openBotModal, openRemoveModal } = useOutletContext<{
     openBotModal: (id: string) => void;
-    openRemoveModal: (id: string) => void;
+    openRemoveModal: (id: string, totalInvest: number) => void;
   }>();
   const isTablet = useTablet();
 
@@ -116,7 +114,11 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
                     <StAddBtn onClick={() => openBotModal(item.bot_id)}>
                       Add
                     </StAddBtn>
-                    <StRemoveBtn onClick={() => openRemoveModal(item.bot_id)}>
+                    <StRemoveBtn
+                      onClick={() =>
+                        openRemoveModal(item.bot_id, item.total_investment)
+                      }
+                    >
                       Remove
                     </StRemoveBtn>
                   </div>
@@ -195,37 +197,39 @@ const ISnotSelectBot = () => {
 
 const Dashboard = () => {
   const [isWalletConnect] = useState(localStorage.getItem('NEUTRONADDRESS'));
-  const [data, setData] = useState<IDashboard>();
-  const { refreshTrigger, openUnConnectModal } = useOutletContext<{
-    refreshTrigger: boolean;
+  const { openUnConnectModal } = useOutletContext<{
     openUnConnectModal: () => void;
   }>();
+  const { data, isLoading } = useQuery({
+    queryKey: ['dashboard', isWalletConnect],
+    queryFn: () => getDashboard(isWalletConnect), // getDashboard 호출
+    retry: false,
+  });
+  // useEffect(() => {
+  //   if (!isWalletConnect) return;
+  //   getData();
+  // }, [refreshTrigger]);
 
-  useEffect(() => {
-    if (!isWalletConnect) return;
-    getData();
-  }, [refreshTrigger]);
-
-  const getData = async () => {
-    try {
-      const { data } = await instance.get(
-        `${base_url}/api/dashboard?user_id=${isWalletConnect}`
-      );
-      // console.log(`🫥dashboard :`, data);
-      setData(data);
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        err.response.status === 404 && setData(MOCK_DASHBOARD);
-        return;
-      }
-    }
-  };
+  // const getData = async () => {
+  //   try {
+  //     const { data } = await instance.get(
+  //       `${base_url}/api/dashboard?user_id=${isWalletConnect}`
+  //     );
+  //     // console.log(`🫥dashboard :`, data);
+  //     setData(data);
+  //   } catch (err) {
+  //     if (axios.isAxiosError(err) && err.response) {
+  //       err.response.status === 404 && setData(MOCK_DASHBOARD);
+  //       return;
+  //     }
+  //   }
+  // };
 
   return (
     <StContainer>
       <SelectView view={VIEW.DASHBOARD} />
       {isWalletConnect ? (
-        data ? (
+        !isLoading ? (
           data?.bots?.length ? (
             <ShowDashboardData data={data} />
           ) : (

@@ -1,5 +1,6 @@
 import {
   STCOMBackground,
+  STCOMBlueBtn,
   STCOMGreyBtn,
 } from '../../common/styles/commonStyleComs';
 import styled from '@emotion/styled';
@@ -8,42 +9,54 @@ import axios from 'axios';
 import { useRef, useState } from 'react';
 import useOutsideClick from '../../common/hooks/useOutsideClick';
 import instance from '../../common/apis/instance';
+import useQveToken from '../../common/hooks/useQveToken';
+import { useNavigate } from 'react-router-dom';
+import { removeTokens } from '../../contract/remove';
+import { useQueryClient } from '@tanstack/react-query';
 
 const RemoveModal = ({
   isOpen,
   onClose,
   botId,
+  totalInvest,
 }: {
   isOpen: boolean;
   onClose: () => void;
   botId?: string | null;
+  totalInvest: number | null;
 }) => {
+  const navigate = useNavigate();
   const wrapperRef = useRef<HTMLDivElement>(null);
   useOutsideClick(wrapperRef, onClose);
   const [isLoading, setIsLoading] = useState(false);
-  if (!isOpen) return;
+  const qveTokenBalance = useQveToken();
+  const queryClient = useQueryClient();
+  const [address] = useState(localStorage.getItem('NEUTRONADDRESS'));
+  if (!isOpen || !totalInvest || !qveTokenBalance) return;
 
   const remove = async () => {
-    if (!localStorage.getItem('NEUTRONADDRESS')) return;
+    if (!address) return;
     const base_url = import.meta.env.VITE_BASE_URL;
 
     const postBody = {
-      user_id: localStorage.getItem('NEUTRONADDRESS'),
+      user_id: address,
       bot_id: botId,
     };
     try {
       setIsLoading(true);
       await instance.post(`${base_url}/api/remove`, postBody);
+      await removeTokens(totalInvest * 0.8);
       onClose();
       setIsLoading(false);
-      window.location.reload();
+
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        setIsLoading(false);
         err.response.status === 499 &&
           alert('You can remove this bot after 3 days of deposing!');
         return;
       }
+      setIsLoading(false);
     }
   };
 
@@ -51,17 +64,37 @@ const RemoveModal = ({
     <STCOMBackground>
       <StWrapper ref={wrapperRef}>
         <StTop>
-          <p>Remove</p>
+          <div />
           <IcModalX onClick={onClose} style={{ cursor: 'pointer' }} />
         </StTop>
-        <StMiddle>
-          <span>Are you sure you want to stop the</span>
-          <span>Cyclic Arb BOT and close your trades?</span>
-        </StMiddle>
+        {totalInvest * 0.8 <= qveTokenBalance ? (
+          <StMiddle>
+            <span>Are you sure you want to stop the</span>
+            <span>Cyclic Arb BOT and close your trades?</span>
+          </StMiddle>
+        ) : (
+          <StMiddle>
+            <span>
+              Since there is no qveNTRN(QVE Token) provided as collateral,
+            </span>
+            <span>please exchange additional NTRN on the DEX</span>
+          </StMiddle>
+        )}
         <StBottom>
-          <StRemoveBtn onClick={remove}>
-            {isLoading ? 'Removing Bot..' : 'Remove'}
-          </StRemoveBtn>
+          {totalInvest * 0.8 <= qveTokenBalance ? (
+            <StRemoveBtn onClick={remove}>
+              {isLoading ? 'Removing Bot..' : 'Remove'}
+            </StRemoveBtn>
+          ) : (
+            <StSwqpBtn
+              onClick={() => {
+                onClose();
+                navigate('/swap');
+              }}
+            >
+              Go to DEX
+            </StSwqpBtn>
+          )}
         </StBottom>
       </StWrapper>
     </STCOMBackground>
@@ -111,4 +144,11 @@ const StBottom = styled.div`
 const StRemoveBtn = styled(STCOMGreyBtn)`
   width: 14.7rem;
   height: 4.5rem;
+  ${({ theme }) => theme.fonts.caption};
+`;
+
+const StSwqpBtn = styled(STCOMBlueBtn)`
+  width: 14.7rem;
+  height: 4.5rem;
+  ${({ theme }) => theme.fonts.caption};
 `;
