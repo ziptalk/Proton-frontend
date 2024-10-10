@@ -33,6 +33,7 @@ const StContent = styled.div`
   justify-content: space-between;
   gap: 3rem;
   flex-wrap: wrap;
+  margin-top: 7rem;
 
   @media (${({ theme }) => theme.breakpoints.mobile}) {
     margin-top: 3rem;
@@ -57,7 +58,8 @@ const StItem = styled(STCOMBoxWrapper)`
   padding: 10rem;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.qve_background};
+    border: 1px solid ${({ theme }) => theme.colors.qve_blue};
+    outline: 1px solid ${({ theme }) => theme.colors.qve_blue};
   }
 `;
 

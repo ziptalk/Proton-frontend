@@ -19,16 +19,16 @@ const Footer = () => {
       </StFooter.BlockWave>
       <StFooter.ConnectIcon>
         <a href={LINKS.twitter} target='_blank'>
-          <IcFooterTwitter />
+          <StTwitter />
         </a>
         <a href={LINKS.telegrem} target='_blank'>
-          <IcFooterTelegram />
+          <StTelegram />
         </a>
         {/* <a href={LINKS.medium} target='_blank'>
           <IcFooterMedium />
         </a> */}
         <a href={LINKS.github} target='_blank'>
-          <IcFooterGithub />
+          <StGithub />
         </a>
       </StFooter.ConnectIcon>
     </StFooter.Container>
@@ -83,3 +83,27 @@ const StFooter = {
     }
   `,
 };
+
+const StTwitter = styled(IcFooterTwitter)`
+  &:hover {
+    & path {
+      fill: white;
+    }
+  }
+`;
+
+const StTelegram = styled(IcFooterTelegram)`
+  &:hover {
+    & path {
+      fill: white;
+    }
+  }
+`;
+
+const StGithub = styled(IcFooterGithub)`
+  &:hover {
+    & path {
+      fill: white;
+    }
+  }
+`;

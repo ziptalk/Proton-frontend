@@ -301,7 +301,7 @@ const StinputContainer = styled.div<{ isFocused: boolean }>`
     width: 6.6rem;
     height: 3rem;
     border-radius: 6px;
-    border: 1px solid ${({ theme }) => theme.colors.sub_white};
+    border: 1px solid ${({ theme }) => theme.colors.not_important};
     background: linear-gradient(
       144deg,
       rgba(255, 255, 255, 0.1) -9.46%,
@@ -309,6 +309,19 @@ const StinputContainer = styled.div<{ isFocused: boolean }>`
     );
     ${({ theme }) => theme.fonts.caption};
     color: ${({ theme }) => theme.colors.white};
+
+    &:hover {
+      background: linear-gradient(
+          0deg,
+          rgba(74, 60, 232, 0.2) 0%,
+          rgba(74, 60, 232, 0.2) 100%
+        ),
+        linear-gradient(
+          144deg,
+          rgba(255, 255, 255, 0.1) -9.46%,
+          rgba(255, 255, 255, 0.25) 115.25%
+        );
+    }
   }
 `;
 

@@ -2,7 +2,8 @@ import { Theme } from '@emotion/react';
 
 const colors = {
   qve_gradient: 'linear-gradient(100deg, #2f44af 13%, #581a38 54%)',
-  qve_blue: '#4A3EE9',
+  qve_blue: '#4A3CE8',
+  qve_blue_hover: '#342AA2',
   invest_background: '#232323',
   white: '#ffffff',
   not_important: '#AEAEAE',

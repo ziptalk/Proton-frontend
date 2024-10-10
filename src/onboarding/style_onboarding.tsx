@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { STCOMGlassWrapper } from '../common/styles/commonStyleComs';
 import { transformStyles } from '../common/styles/transformStyles';
 import { onBoardingBackImg1 } from '../common/assets/0_index';
+import { IcTwitter } from './assets/0_index';
 export const MainContainer = styled.div`
   width: 100vw;
   max-width: 120rem;
@@ -107,6 +108,13 @@ export const Section1 = {
     & p {
       margin: 3.4rem 0 1.4rem;
       ${({ theme }) => theme.fonts.body_3m};
+    }
+  `,
+  IconTwitter: styled(IcTwitter)`
+    &:hover {
+      & path {
+        fill: white;
+      }
     }
   `,
   BackgroundImg1: styled.div`
