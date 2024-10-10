@@ -13,7 +13,6 @@ const BotModalReceive = ({
   domesticRate,
   qveTokenBalance,
 }: IReceiveProps) => {
-  if (!qveTokenBalance) return;
   return (
     <StContainer>
       <StHeader>
@@ -28,7 +27,9 @@ const BotModalReceive = ({
         </StLeftContent>
         <StRightContent>
           <div>qveNTRN</div>
-          <StBalance>Balance {formatPriceValue(qveTokenBalance)}</StBalance>
+          <StBalance>
+            Balance {qveTokenBalance && formatPriceValue(qveTokenBalance)}
+          </StBalance>
         </StRightContent>
       </StContent>
     </StContainer>
