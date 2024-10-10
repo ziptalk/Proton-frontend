@@ -54,6 +54,7 @@ const globalStyles = css`
   button {
     border: none;
     cursor: pointer;
+    background: none;
   }
 `;
 
