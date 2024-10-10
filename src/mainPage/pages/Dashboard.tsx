@@ -20,6 +20,7 @@ import TableTablet from '../components/TableTablet';
 
 import { getDashboard } from '../../common/apis/apis';
 import { useQuery } from '@tanstack/react-query';
+import TotalBalance from '../components/TotalBalance';
 
 const ShowDashboardData = ({ data }: { data: IDashboard }) => {
   const TOKEN = 'NTRN';
@@ -32,7 +33,11 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
   return (
     <>
       <StTotalContainer>
-        <div>
+        <TotalBalance
+          totalBalance={data.total_balance}
+          domesticRate={data.domesticRate}
+        />
+        {/* <div>
           <label>Total Balance</label>
           <StTotalTokenValue>
             {formatPriceValue(data.total_balance)} {TOKEN}
@@ -40,7 +45,7 @@ const ShowDashboardData = ({ data }: { data: IDashboard }) => {
           <StTotalDollarValue>
             ≈ ${formatPriceValue(data.total_balance * data.domesticRate)}
           </StTotalDollarValue>
-        </div>
+        </div> */}
         <div>
           <label>Total Profit</label>
           <StTotalTokenValue>
