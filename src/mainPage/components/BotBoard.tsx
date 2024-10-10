@@ -123,6 +123,11 @@ const StGlassWrapper = styled(STCOMGlassWrapper)`
     width: 100%;
     min-height: 33rem;
   }
+
+  &:not(:last-child):hover {
+    border: 1px solid ${({ theme }) => theme.colors.qve_blue};
+    outline: 1px solid ${({ theme }) => theme.colors.qve_blue};
+  }
 `;
 
 const StLogoGradationBot = styled(LogoGradationBot)`

@@ -39,6 +39,10 @@ export const STCOMBlueBtn = styled.button`
   border-radius: 100px;
   ${({ theme }) => theme.fonts.body_2_bold};
   color: ${({ theme }) => theme.colors.white};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.qve_blue_hover};
+  }
 `;
 
 export const STCOMGreyBtn = styled.button`
